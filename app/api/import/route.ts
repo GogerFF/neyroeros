@@ -10,7 +10,7 @@ const TRANSLIT: Record<string, string> = {
   э: "e", ю: "yu", я: "ya",
 };
 
-function slugifyLatin(value: string) {
+export function slugifyLatin(value: string) {
   return value.toLowerCase().trim()
     .split("")
     .map((ch) => TRANSLIT[ch] ?? ch)
@@ -20,15 +20,51 @@ function slugifyLatin(value: string) {
     .slice(0, 90) || "art";
 }
 
+const CYRILLIC = /[а-яё]/i;
+
 async function guard() {
   const s = await auth();
   if (!s?.user || !["ADMIN", "MODERATOR"].includes(s.user.role)) return null;
   return s.user;
 }
 
-export async function GET() {
+async function uniqueSlug(base: string, currentId: string) {
+  let candidate = base;
+  let index = 2;
+  while (true) {
+    const existing = await db.artwork.findUnique({ where: { slug: candidate }, select: { id: true } });
+    if (!existing || existing.id === currentId) return candidate;
+    candidate = `${base}-${index++}`;
+  }
+}
+
+export async function GET(req: Request) {
   const user = await guard();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const url = new URL(req.url);
+
+  if (url.searchParams.get("action") === "list") {
+    const [works, categories] = await Promise.all([
+      db.artwork.findMany({
+        where: { status: { not: "DELETED" } },
+        select: {
+          id: true, slug: true, title: true, status: true, categoryId: true, createdAt: true,
+          category: { select: { name: true, slug: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 500,
+      }),
+      db.category.findMany({
+        select: {
+          id: true, name: true, slug: true, description: true, isActive: true,
+          _count: { select: { artworks: { where: { status: { not: "DELETED" } } } } },
+        },
+        orderBy: { name: "asc" },
+      }),
+    ]);
+    return Response.json({ works, categories });
+  }
+
   const categories = await db.category.findMany({
     where: { isActive: true },
     select: { id: true, name: true, slug: true, description: true },
@@ -40,6 +76,27 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await guard();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const url = new URL(req.url);
+
+  // Исправить кириллические slug (такие URL не открываются).
+  if (url.searchParams.get("action") === "fix-slugs") {
+    const all = await db.artwork.findMany({
+      where: { status: { not: "DELETED" } },
+      select: { id: true, slug: true, title: true },
+    });
+    let fixed = 0;
+    for (const a of all) {
+      if (!CYRILLIC.test(a.slug)) continue;
+      const base = `${slugifyLatin(a.title) || "art"}-${a.id.slice(0, 8)}`;
+      const next = await uniqueSlug(base, a.id);
+      if (next !== a.slug) {
+        await db.artwork.update({ where: { id: a.id }, data: { slug: next } });
+        fixed++;
+      }
+    }
+    return Response.json({ ok: true, fixed });
+  }
+
   await enforceRateLimit("IMPORT", user.id, 200, 3600000);
 
   const form = await req.formData();
@@ -73,8 +130,8 @@ export async function POST(req: Request) {
     noDeepfake: true,
   });
 
-  // Кириллица в slug ломает публичные URL (500 при прямом вводе) — приводим к латинице.
-  const latinSlug = `${slugifyLatin(title)}-${artwork.id.slice(0, 8)}`;
+  // Кириллица в slug ломает публичные URL — приводим к латинице.
+  const latinSlug = await uniqueSlug(`${slugifyLatin(title)}-${artwork.id.slice(0, 8)}`, artwork.id);
   if (latinSlug !== artwork.slug) {
     await db.artwork.update({ where: { id: artwork.id }, data: { slug: latinSlug } });
   }
@@ -98,14 +155,30 @@ export async function POST(req: Request) {
   return Response.json({ id: artwork.id, slug: latinSlug, status: artwork.status, tags: tagNames.length });
 }
 
-// Удаление черновика, созданного импортом (soft delete, только DRAFT).
+// Удаление любой работы (soft delete) или категории.
 export async function DELETE(req: Request) {
   const user = await guard();
   if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
-  const id = new URL(req.url).searchParams.get("id");
+  const url = new URL(req.url);
+
+  const categoryId = url.searchParams.get("categoryId");
+  if (categoryId) {
+    const category = await db.category.findUnique({ where: { id: categoryId } });
+    if (!category) return Response.json({ error: "Категория не найдена" }, { status: 404 });
+    const active = await db.artwork.count({ where: { categoryId, status: { not: "DELETED" } } });
+    if (active > 0) {
+      await db.category.update({ where: { id: categoryId }, data: { isActive: false } });
+      return Response.json({ ok: true, hidden: true, works: active });
+    }
+    await db.artwork.updateMany({ where: { categoryId }, data: { categoryId: null } });
+    await db.category.delete({ where: { id: categoryId } });
+    return Response.json({ ok: true, deleted: true });
+  }
+
+  const id = url.searchParams.get("id");
   if (!id) return Response.json({ error: "id обязателен" }, { status: 400 });
-  const artwork = await db.artwork.findFirst({ where: { id, status: "DRAFT" } });
-  if (!artwork) return Response.json({ error: "Черновик не найден" }, { status: 404 });
+  const artwork = await db.artwork.findFirst({ where: { id, status: { not: "DELETED" } } });
+  if (!artwork) return Response.json({ error: "Работа не найдена" }, { status: 404 });
   await db.artwork.update({ where: { id }, data: { status: "DELETED", deletedAt: new Date() } });
-  return Response.json({ ok: true, id, slug: artwork.slug });
+  return Response.json({ ok: true, id, slug: artwork.slug, status: artwork.status });
 }
