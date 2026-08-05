@@ -1,0 +1,315 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum ArtworkStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  SCHEDULED
+  PUBLISHED
+  HIDDEN
+  DELETED
+}
+
+enum QueueStatus {
+  PENDING
+  PROCESSING
+  PUBLISHED
+  CANCELLED
+  FAILED
+}
+
+enum TagSource {
+  USER
+  AI
+  MODERATOR
+}
+
+enum ModerationActionType {
+  SUBMIT
+  APPROVE
+  REJECT
+  HIDE
+  RESTORE
+  EDIT_METADATA
+  DELETE
+}
+
+enum AiSuggestionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  FAILED
+}
+
+model User {
+  id                String             @id @default(cuid())
+  email             String             @unique
+  passwordHash      String
+  displayName       String?
+  avatar            UserAvatar?
+  role              UserRole           @default(USER)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  disabledAt        DateTime?
+  artworks          Artwork[]
+  stories           Story[]
+  moderationActions ModerationAction[]
+  comments          Comment[]
+  artworkLikes      ArtworkLike[]
+}
+
+model UserAvatar {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storageKey String   @unique
+  mimeType   String   @default("image/webp")
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+}
+
+model Artwork {
+  id                String                @id @default(cuid())
+  slug              String                @unique
+  authorId          String
+  author            User                  @relation(fields: [authorId], references: [id])
+  title             String
+  description       String?
+  sourceLocale      String                @default("ru")
+  status            ArtworkStatus         @default(DRAFT)
+  isNsfw            Boolean               @default(true)
+  categoryId        String?
+  category          Category?             @relation(fields: [categoryId], references: [id])
+  moderationNote    String?
+  submittedAt       DateTime?
+  approvedAt        DateTime?
+  publishedAt       DateTime?
+  hiddenAt          DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  asset             ArtworkAsset?
+  tags              ArtworkTag[]
+  moderationActions ModerationAction[]
+  publicationQueue  PublicationQueueItem?
+  aiSuggestions     AiSuggestion[]
+  translations      ArtworkTranslation[]
+  comments          Comment[]
+  likes             ArtworkLike[]
+
+  @@index([status, publishedAt])
+  @@index([authorId, createdAt])
+}
+
+model ArtworkTranslation {
+  id          String   @id @default(cuid())
+  artworkId   String
+  artwork     Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  locale      String
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([artworkId, locale])
+  @@index([locale])
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  artworkId String
+  authorId  String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  artwork   Artwork   @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([artworkId, createdAt])
+}
+
+model ArtworkLike {
+  artworkId String
+  userId    String
+  createdAt DateTime @default(now())
+  artwork   Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([artworkId, userId])
+  @@index([artworkId])
+}
+
+model ArtworkAsset {
+  id           String   @id @default(cuid())
+  artworkId    String   @unique
+  artwork      Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  storageKey   String   @unique
+  previewKey   String   @unique
+  thumbnailKey String   @unique
+  mimeType     String
+  sizeBytes    Int
+  width        Int
+  height       Int
+  sha256       String
+  createdAt    DateTime @default(now())
+
+  @@index([sha256])
+}
+
+model Tag {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  slug      String       @unique
+  artworks  ArtworkTag[]
+  createdAt DateTime     @default(now())
+}
+
+model ArtworkTag {
+  artworkId String
+  tagId     String
+  source    TagSource @default(USER)
+  artwork   Artwork   @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  tag       Tag       @relation(fields: [tagId], references: [id])
+
+  @@id([artworkId, tagId])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  isActive    Boolean   @default(true)
+  artworks    Artwork[]
+  stories     Story[]
+}
+
+model ModerationAction {
+  id          String               @id @default(cuid())
+  artworkId   String
+  moderatorId String
+  artwork     Artwork              @relation(fields: [artworkId], references: [id])
+  moderator   User                 @relation(fields: [moderatorId], references: [id])
+  action      ModerationActionType
+  fromStatus  ArtworkStatus?
+  toStatus    ArtworkStatus
+  reason      String?
+  metadata    Json?
+  createdAt   DateTime             @default(now())
+
+  @@index([artworkId, createdAt])
+}
+
+model PublicationQueueItem {
+  id           String      @id @default(cuid())
+  artworkId    String      @unique
+  artwork      Artwork     @relation(fields: [artworkId], references: [id])
+  scheduledFor DateTime
+  status       QueueStatus @default(PENDING)
+  attempts     Int         @default(0)
+  lockedAt     DateTime?
+  lastError    String?
+  publishedAt  DateTime?
+  createdAt    DateTime    @default(now())
+
+  @@index([status, scheduledFor])
+}
+
+model AiSuggestion {
+  id         String             @id @default(cuid())
+  artworkId  String
+  artwork    Artwork            @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  provider   String
+  model      String
+  kind       String
+  inputHash  String?
+  suggestion Json
+  status     AiSuggestionStatus @default(PENDING)
+  createdAt  DateTime           @default(now())
+  reviewedAt DateTime?
+}
+
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model Story {
+  id                String              @id @default(cuid())
+  slug              String              @unique
+  authorId          String
+  author            User                @relation(fields: [authorId], references: [id])
+  title             String
+  body              String
+  description       String?
+  categoryId        String?
+  category          Category?           @relation(fields: [categoryId], references: [id])
+  sourceLocale      String              @default("ru")
+  status            ArtworkStatus       @default(DRAFT)
+  publishedAt       DateTime?
+  approvedAt        DateTime?
+  submittedAt       DateTime?
+  hiddenAt          DateTime?
+  deletedAt         DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  illustrations     StoryIllustration[]
+  storyTranslations StoryTranslation[]
+
+  @@index([status, publishedAt])
+  @@index([authorId, createdAt])
+}
+
+model StoryIllustration {
+  id         String   @id @default(cuid())
+  storyId    String
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storageKey String   @unique
+  previewKey String   @unique
+  width      Int
+  height     Int
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([storyId, sortOrder])
+}
+
+model StoryTranslation {
+  id          String   @id @default(cuid())
+  storyId     String
+  story       Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  locale      String
+  title       String
+  body        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([storyId, locale])
+  @@index([locale])
+}
+
+model RateLimitEvent {
+  id          String   @id @default(cuid())
+  scope       String
+  subjectHash String
+  createdAt   DateTime @default(now())
+
+  @@index([scope, subjectHash, createdAt])
+}

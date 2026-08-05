@@ -1,0 +1,1 @@
+import{publishDue}from"@/lib/services/publication-service";export async function POST(req:Request){if(req.headers.get("authorization")!==`Bearer ${process.env.CRON_SECRET}`)return Response.json({error:"Unauthorized"},{status:401});const published=await publishDue();return Response.json({published})}

@@ -1,0 +1,33 @@
+"use client";
+
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useEffect } from "react";
+
+type Item = { id: string; slug: string; title: string };
+
+export function ArtworkNavigator({ current, items, categorySlug }: { current: string; items: Item[]; categorySlug?: string }) {
+  const position = items.findIndex((item) => item.slug === current);
+  const previous = position > 0 ? items[position - 1] : null;
+  const next = position >= 0 && position < items.length - 1 ? items[position + 1] : null;
+  const backHref = categorySlug ? `/categories/${categorySlug}` : "/";
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft" && previous) location.assign(`/artwork/${previous.slug}?category=${categorySlug || ""}`);
+      if (event.key === "ArrowRight" && next) location.assign(`/artwork/${next.slug}?category=${categorySlug || ""}`);
+    };
+    addEventListener("keydown", onKey);
+    return () => removeEventListener("keydown", onKey);
+  }, [previous, next, categorySlug]);
+
+  if (!categorySlug || position < 0) return null;
+  return <nav className="art-navigator" aria-label="Навигация по работам категории">
+    <Link className="art-nav-close" href={backHref} aria-label="Вернуться к категории"><X size={20}/></Link>
+    <span>{position + 1} / {items.length}</span>
+    <div>
+      {previous ? <Link href={`/artwork/${previous.slug}?category=${categorySlug}`} aria-label="Предыдущая работа"><ChevronLeft size={24}/></Link> : <span className="disabled"><ChevronLeft size={24}/></span>}
+      {next ? <Link href={`/artwork/${next.slug}?category=${categorySlug}`} aria-label="Следующая работа"><ChevronRight size={24}/></Link> : <span className="disabled"><ChevronRight size={24}/></span>}
+    </div>
+  </nav>;
+}

@@ -1,0 +1,1 @@
+import Link from"next/link";export default function NotFound(){return <section className="auth"><div className="panel"><span className="eyebrow">404</span><h1>Работа растворилась во тьме</h1><Link className="button" href="/">Вернуться в галерею</Link></div></section>}

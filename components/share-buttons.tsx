@@ -1,0 +1,4 @@
+"use client";
+import { Link2, PinIcon, Send } from "lucide-react";
+import { buildShareUrls } from "@/lib/social";
+export function ShareButtons({url,title,image}:{url:string;title:string;image:string}){const s=buildShareUrls(url,title,image);return <div className="share-buttons"><span>Поделиться</span><a href={s.telegram} target="_blank" rel="noreferrer" aria-label="Telegram"><Send size={18}/></a><a href={s.x} target="_blank" rel="noreferrer" aria-label="X"><b>𝕏</b></a><a href={s.pinterest} target="_blank" rel="noreferrer" aria-label="Pinterest"><PinIcon size={18}/></a><a href={s.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><b>f</b></a><button type="button" onClick={()=>navigator.clipboard.writeText(url)} aria-label="Скопировать ссылку"><Link2 size={18}/></button></div>}

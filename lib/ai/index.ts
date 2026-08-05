@@ -1,0 +1,1 @@
+import { MockAiMetadataProvider } from "./mock-provider"; export const aiProvider=new MockAiMetadataProvider();

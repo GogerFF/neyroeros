@@ -1,0 +1,1 @@
+export type AiMetadata={title?:string;description:string;tags:string[];category:string;confidence:number}; export interface AiMetadataProvider{readonly name:string;readonly model:string;analyzeImage(input:Buffer):Promise<AiMetadata>;improveDescription(text:string):Promise<string>}

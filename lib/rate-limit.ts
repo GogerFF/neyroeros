@@ -1,0 +1,2 @@
+import { createHash } from "node:crypto"; import { db } from "@/lib/db";
+export async function enforceRateLimit(scope:string,subject:string,limit:number,windowMs:number){const subjectHash=createHash("sha256").update(subject).digest("hex");const since=new Date(Date.now()-windowMs);const count=await db.rateLimitEvent.count({where:{scope,subjectHash,createdAt:{gte:since}}});if(count>=limit)throw new Error("Слишком много запросов. Попробуйте позже.");await db.rateLimitEvent.create({data:{scope,subjectHash}})}

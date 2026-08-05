@@ -12,9 +12,17 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+
+# local data
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/prisma/*.db
+/prisma/*.db-journal
 
 # next.js
-/.next/
+/.next/cache/
 /out/
 
 # production
@@ -39,3 +47,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.hermes/

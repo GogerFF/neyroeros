@@ -1,0 +1,1 @@
+"use client";export default function Error({reset}:{reset:()=>void}){return <section className="auth"><div className="panel"><h1>Что-то пошло не так</h1><p>Мы уже зажигаем свет.</p><button onClick={reset}>Попробовать снова</button></div></section>}
