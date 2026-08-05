@@ -1,8 +1,24 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { createArtwork } from "@/lib/services/artwork-service";
-import { slugify } from "@/lib/utils";
 import { enforceRateLimit } from "@/lib/rate-limit";
+
+const TRANSLIT: Record<string, string> = {
+  а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z", и: "i",
+  й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t",
+  у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sch", ъ: "", ы: "y", ь: "",
+  э: "e", ю: "yu", я: "ya",
+};
+
+function slugifyLatin(value: string) {
+  return value.toLowerCase().trim()
+    .split("")
+    .map((ch) => TRANSLIT[ch] ?? ch)
+    .join("")
+    .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+    .slice(0, 90) || "art";
+}
 
 async function guard() {
   const s = await auth();
@@ -57,13 +73,19 @@ export async function POST(req: Request) {
     noDeepfake: true,
   });
 
+  // Кириллица в slug ломает публичные URL (500 при прямом вводе) — приводим к латинице.
+  const latinSlug = `${slugifyLatin(title)}-${artwork.id.slice(0, 8)}`;
+  if (latinSlug !== artwork.slug) {
+    await db.artwork.update({ where: { id: artwork.id }, data: { slug: latinSlug } });
+  }
+
   const tagNames = Array.isArray(meta.tags)
     ? meta.tags.map((t) => String(t).trim().slice(0, 64)).filter(Boolean).slice(0, 20)
     : [];
   for (const name of tagNames) {
     const tag = await db.tag.upsert({
       where: { name },
-      create: { name, slug: `${slugify(name) || "tag"}-${crypto.randomUUID().slice(0, 6)}` },
+      create: { name, slug: `${slugifyLatin(name) || "tag"}-${crypto.randomUUID().slice(0, 6)}` },
       update: {},
     });
     await db.artworkTag.upsert({
@@ -73,5 +95,17 @@ export async function POST(req: Request) {
     });
   }
 
-  return Response.json({ id: artwork.id, slug: artwork.slug, status: artwork.status, tags: tagNames.length });
+  return Response.json({ id: artwork.id, slug: latinSlug, status: artwork.status, tags: tagNames.length });
+}
+
+// Удаление черновика, созданного импортом (soft delete, только DRAFT).
+export async function DELETE(req: Request) {
+  const user = await guard();
+  if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const id = new URL(req.url).searchParams.get("id");
+  if (!id) return Response.json({ error: "id обязателен" }, { status: 400 });
+  const artwork = await db.artwork.findFirst({ where: { id, status: "DRAFT" } });
+  if (!artwork) return Response.json({ error: "Черновик не найден" }, { status: 404 });
+  await db.artwork.update({ where: { id }, data: { status: "DELETED", deletedAt: new Date() } });
+  return Response.json({ ok: true, id, slug: artwork.slug });
 }
