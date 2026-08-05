@@ -14,13 +14,13 @@
   "/dashboard/uploads/new/page": "app/dashboard/uploads/new/page.js",
   "/login/page": "app/login/page.js",
   "/register/page": "app/register/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/categories/[slug]/page": "app/categories/[slug]/page.js",
   "/categories/page": "app/categories/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
+  "/categories/[slug]/page": "app/categories/[slug]/page.js",
   "/dashboard/settings/page": "app/dashboard/settings/page.js",
-  "/page": "app/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/search/page": "app/search/page.js",
+  "/stories/page": "app/stories/page.js",
+  "/admin/page": "app/admin/page.js",
   "/stories/[slug]/page": "app/stories/[slug]/page.js",
-  "/stories/page": "app/stories/page.js"
+  "/page": "app/page.js"
 }

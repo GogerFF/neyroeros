@@ -14,13 +14,13 @@
   "/dashboard/uploads/new/page": "/dashboard/uploads/new",
   "/login/page": "/login",
   "/register/page": "/register",
-  "/admin/page": "/admin",
-  "/categories/[slug]/page": "/categories/[slug]",
   "/categories/page": "/categories",
-  "/dashboard/page": "/dashboard",
+  "/categories/[slug]/page": "/categories/[slug]",
   "/dashboard/settings/page": "/dashboard/settings",
-  "/page": "/",
+  "/dashboard/page": "/dashboard",
   "/search/page": "/search",
+  "/stories/page": "/stories",
+  "/admin/page": "/admin",
   "/stories/[slug]/page": "/stories/[slug]",
-  "/stories/page": "/stories"
+  "/page": "/"
 }
