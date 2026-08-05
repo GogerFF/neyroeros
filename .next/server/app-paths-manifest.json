@@ -7,6 +7,8 @@
   "/api/images/[variant]/[id]/route": "app/api/images/[variant]/[id]/route.js",
   "/api/stories/images/[id]/route": "app/api/stories/images/[id]/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/artwork/[slug]/page": "app/artwork/[slug]/page.js",
   "/dashboard/stories/new/page": "app/dashboard/stories/new/page.js",
@@ -14,13 +16,13 @@
   "/dashboard/uploads/new/page": "app/dashboard/uploads/new/page.js",
   "/login/page": "app/login/page.js",
   "/register/page": "app/register/page.js",
+  "/admin/page": "app/admin/page.js",
   "/categories/page": "app/categories/page.js",
   "/categories/[slug]/page": "app/categories/[slug]/page.js",
   "/dashboard/settings/page": "app/dashboard/settings/page.js",
   "/dashboard/page": "app/dashboard/page.js",
+  "/page": "app/page.js",
   "/search/page": "app/search/page.js",
   "/stories/page": "app/stories/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/stories/[slug]/page": "app/stories/[slug]/page.js",
-  "/page": "app/page.js"
+  "/stories/[slug]/page": "app/stories/[slug]/page.js"
 }

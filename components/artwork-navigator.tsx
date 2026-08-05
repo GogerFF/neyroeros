@@ -6,6 +6,10 @@ import { useEffect } from "react";
 
 type Item = { id: string; slug: string; title: string };
 
+function hrefFor(slug: string, categorySlug?: string) {
+  return categorySlug ? `/artwork/${slug}?category=${categorySlug}` : `/artwork/${slug}`;
+}
+
 export function ArtworkNavigator({ current, items, categorySlug }: { current: string; items: Item[]; categorySlug?: string }) {
   const position = items.findIndex((item) => item.slug === current);
   const previous = position > 0 ? items[position - 1] : null;
@@ -14,20 +18,21 @@ export function ArtworkNavigator({ current, items, categorySlug }: { current: st
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "ArrowLeft" && previous) location.assign(`/artwork/${previous.slug}?category=${categorySlug || ""}`);
-      if (event.key === "ArrowRight" && next) location.assign(`/artwork/${next.slug}?category=${categorySlug || ""}`);
+      if (event.key === "ArrowLeft" && previous) location.assign(hrefFor(previous.slug, categorySlug));
+      if (event.key === "ArrowRight" && next) location.assign(hrefFor(next.slug, categorySlug));
+      if (event.key === "Escape") location.assign(backHref);
     };
     addEventListener("keydown", onKey);
     return () => removeEventListener("keydown", onKey);
-  }, [previous, next, categorySlug]);
+  }, [previous, next, categorySlug, backHref]);
 
-  if (!categorySlug || position < 0) return null;
-  return <nav className="art-navigator" aria-label="Навигация по работам категории">
-    <Link className="art-nav-close" href={backHref} aria-label="Вернуться к категории"><X size={20}/></Link>
+  if (position < 0 || items.length < 2) return null;
+  return <nav className="art-navigator" aria-label="Навигация по работам">
+    <Link className="art-nav-close" href={backHref} aria-label="Вернуться к галерее"><X size={20}/></Link>
     <span>{position + 1} / {items.length}</span>
     <div>
-      {previous ? <Link href={`/artwork/${previous.slug}?category=${categorySlug}`} aria-label="Предыдущая работа"><ChevronLeft size={24}/></Link> : <span className="disabled"><ChevronLeft size={24}/></span>}
-      {next ? <Link href={`/artwork/${next.slug}?category=${categorySlug}`} aria-label="Следующая работа"><ChevronRight size={24}/></Link> : <span className="disabled"><ChevronRight size={24}/></span>}
+      {previous ? <Link href={hrefFor(previous.slug, categorySlug)} aria-label="Предыдущая работа"><ChevronLeft size={24}/></Link> : <span className="disabled"><ChevronLeft size={24}/></span>}
+      {next ? <Link href={hrefFor(next.slug, categorySlug)} aria-label="Следующая работа"><ChevronRight size={24}/></Link> : <span className="disabled"><ChevronRight size={24}/></span>}
     </div>
   </nav>;
 }

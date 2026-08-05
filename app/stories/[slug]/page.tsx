@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { absoluteUrl, storySchema } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const story = await db.story.findFirst({ where: { slug, status: "PUBLISHED", deletedAt: null } });
+  if (!story) return { title: "Neyroeros" };
+  return {
+    title: story.title,
+    description: story.description?.slice(0, 155) ?? story.body.slice(0, 155),
+    alternates: { canonical: `/stories/${story.slug}` },
+  };
+}
 
 export default async function StoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -19,7 +32,17 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
   };
   const usedIllustrations = new Set<number>();
 
+  const schema = storySchema({
+    title: story.title,
+    slug: story.slug,
+    description: story.description,
+    authorName: story.author.displayName,
+    datePublished: story.publishedAt,
+    imageUrl: story.illustrations[0] ? absoluteUrl(`/api/stories/images/${story.illustrations[0].id}`) : undefined,
+  });
+
   return <article className="story-page">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}/>
     <header className="story-header">
       <span className="eyebrow">История · {story.author.displayName || "Автор"}</span>
       <h1>{story.title}</h1>

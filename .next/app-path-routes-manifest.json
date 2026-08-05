@@ -7,6 +7,8 @@
   "/api/images/[variant]/[id]/route": "/api/images/[variant]/[id]",
   "/api/stories/images/[id]/route": "/api/stories/images/[id]",
   "/favicon.ico/route": "/favicon.ico",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml",
   "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/artwork/[slug]/page": "/artwork/[slug]",
   "/dashboard/stories/new/page": "/dashboard/stories/new",
@@ -14,13 +16,13 @@
   "/dashboard/uploads/new/page": "/dashboard/uploads/new",
   "/login/page": "/login",
   "/register/page": "/register",
+  "/admin/page": "/admin",
   "/categories/page": "/categories",
   "/categories/[slug]/page": "/categories/[slug]",
   "/dashboard/settings/page": "/dashboard/settings",
   "/dashboard/page": "/dashboard",
+  "/page": "/",
   "/search/page": "/search",
   "/stories/page": "/stories",
-  "/admin/page": "/admin",
-  "/stories/[slug]/page": "/stories/[slug]",
-  "/page": "/"
+  "/stories/[slug]/page": "/stories/[slug]"
 }

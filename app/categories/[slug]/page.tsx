@@ -1,1 +1,43 @@
-import{notFound}from"next/navigation";import{db}from"@/lib/db";import{ArtworkGrid}from"@/components/artwork-grid";import{categoryLabel}from"@/lib/i18n";import{getLocale,getMessages,localizeArtworks}from"@/lib/i18n-server";export const dynamic="force-dynamic";export default async function Category({params}:PageProps<"/categories/[slug]">){const{slug}=await params;const[c,locale,m]=await Promise.all([db.category.findUnique({where:{slug},include:{artworks:{where:{status:"PUBLISHED",deletedAt:null},include:{asset:true,author:true,category:true},orderBy:{publishedAt:"desc"}}}}),getLocale(),getMessages()]);if(!c)notFound();const[x,works]=[categoryLabel(c.slug,locale,c),await localizeArtworks(c.artworks,locale)];return <section className="section"><span className="eyebrow">{m.category}</span><h1>{x.name}</h1><p className="lead">{x.description}</p><p className="category-hint">Откройте работу и листайте подборку стрелками ← → или кнопками на странице.</p><ArtworkGrid items={works} locale={locale} m={m} categorySlug={slug}/></section>}
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { db } from "@/lib/db";
+import { ArtworkGrid } from "@/components/artwork-grid";
+import { categoryLabel } from "@/lib/i18n";
+import { getLocale, getMessages, localizeArtworks } from "@/lib/i18n-server";
+import { collectionSchema } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: PageProps<"/categories/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  const c = await db.category.findUnique({ where: { slug } });
+  if (!c) return { title: "Neyroeros" };
+  return {
+    title: c.name,
+    description: c.description?.slice(0, 155),
+    alternates: { canonical: `/categories/${c.slug}` },
+  };
+}
+
+export default async function Category({ params }: PageProps<"/categories/[slug]">) {
+  const { slug } = await params;
+  const [c, locale, m] = await Promise.all([
+    db.category.findUnique({
+      where: { slug },
+      include: { artworks: { where: { status: "PUBLISHED", deletedAt: null }, include: { asset: true, author: true, category: true }, orderBy: { publishedAt: "desc" } } },
+    }),
+    getLocale(),
+    getMessages(),
+  ]);
+  if (!c) notFound();
+  const [x, works] = [categoryLabel(c.slug, locale, c), await localizeArtworks(c.artworks, locale)];
+  const schema = collectionSchema({ name: x.name, slug: c.slug, description: c.description });
+  return <section className="section">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}/>
+    <span className="eyebrow">{m.category}</span>
+    <h1>{x.name}</h1>
+    <p className="lead">{x.description}</p>
+    <p className="category-hint">Откройте работу и листайте подборку стрелками ← → или кнопками на странице.</p>
+    <ArtworkGrid items={works} locale={locale} m={m} categorySlug={slug}/>
+  </section>;
+}

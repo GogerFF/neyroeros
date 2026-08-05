@@ -1,0 +1,10 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+
+Host: https://neyroeros.com
+Sitemap: https://neyroeros.com/sitemap.xml
