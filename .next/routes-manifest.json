@@ -1,0 +1,304 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    }
+  ],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/auth/[...nextauth]",
+      "regex": "^/api/auth/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPnextauth": "nxtPnextauth"
+      },
+      "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/avatars/[id]",
+      "regex": "^/api/avatars/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/avatars/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/images/download/[id]",
+      "regex": "^/api/images/download/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/images/download/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/images/[variant]/[id]",
+      "regex": "^/api/images/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPvariant": "nxtPvariant",
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/images/(?<nxtPvariant>[^/]+?)/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/stories/images/[id]",
+      "regex": "^/api/stories/images/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/stories/images/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/artwork/[slug]",
+      "regex": "^/artwork/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/artwork/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/categories/[slug]",
+      "regex": "^/categories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/categories/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/dashboard/uploads/[id]/edit",
+      "regex": "^/dashboard/uploads/([^/]+?)/edit(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/dashboard/uploads/(?<nxtPid>[^/]+?)/edit(?:/)?$"
+    },
+    {
+      "page": "/stories/[slug]",
+      "regex": "^/stories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/stories/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/api/admin/moderate",
+      "regex": "^/api/admin/moderate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/moderate(?:/)?$"
+    },
+    {
+      "page": "/api/ai/suggest",
+      "regex": "^/api/ai/suggest(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ai/suggest(?:/)?$"
+    },
+    {
+      "page": "/api/cron/publish",
+      "regex": "^/api/cron/publish(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cron/publish(?:/)?$"
+    },
+    {
+      "page": "/api/cron/telegram-random",
+      "regex": "^/api/cron/telegram\\-random(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cron/telegram\\-random(?:/)?$"
+    },
+    {
+      "page": "/api/import",
+      "regex": "^/api/import(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/import(?:/)?$"
+    },
+    {
+      "page": "/api/stories/create",
+      "regex": "^/api/stories/create(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/stories/create(?:/)?$"
+    },
+    {
+      "page": "/api/stories/manage",
+      "regex": "^/api/stories/manage(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/stories/manage(?:/)?$"
+    },
+    {
+      "page": "/categories",
+      "regex": "^/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/categories(?:/)?$"
+    },
+    {
+      "page": "/collections",
+      "regex": "^/collections(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/collections(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/dashboard/settings",
+      "regex": "^/dashboard/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/settings(?:/)?$"
+    },
+    {
+      "page": "/dashboard/stories/new",
+      "regex": "^/dashboard/stories/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/stories/new(?:/)?$"
+    },
+    {
+      "page": "/dashboard/uploads/new",
+      "regex": "^/dashboard/uploads/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/uploads/new(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/image-sitemap.xml",
+      "regex": "^/image\\-sitemap\\.xml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/image\\-sitemap\\.xml(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/register",
+      "regex": "^/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/register(?:/)?$"
+    },
+    {
+      "page": "/robots.txt",
+      "regex": "^/robots\\.txt(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/robots\\.txt(?:/)?$"
+    },
+    {
+      "page": "/rules",
+      "regex": "^/rules(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/rules(?:/)?$"
+    },
+    {
+      "page": "/search",
+      "regex": "^/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/search(?:/)?$"
+    },
+    {
+      "page": "/sitemap.xml",
+      "regex": "^/sitemap\\.xml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sitemap\\.xml(?:/)?$"
+    },
+    {
+      "page": "/stories",
+      "regex": "^/stories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stories(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
