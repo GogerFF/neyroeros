@@ -7,3 +7,6 @@
 
 /* Related artworks + global navigator polish */
 .related{margin-top:4rem;padding:0 4vw}.related h2{font:2rem Georgia;margin:0 0 1.5rem}.art-detail .art-navigator{top:14px}
+
+.art-caption{color:var(--muted);font:italic .82rem/1.5 Georgia,serif;text-align:center;margin-top:10px;max-width:700px}
+/* Story and card images prevent CLS */ .story-illustration img,.card img{height:auto}

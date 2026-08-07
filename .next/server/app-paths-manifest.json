@@ -11,6 +11,7 @@
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/robots.txt/route": "app/robots.txt/route.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/image-sitemap.xml/route": "app/image-sitemap.xml/route.js",
   "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/artwork/[slug]/page": "app/artwork/[slug]/page.js",
   "/dashboard/stories/new/page": "app/dashboard/stories/new/page.js",

@@ -254,6 +254,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/image-sitemap.xml/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/image-sitemap.xml">> = Specific
+  const handler = {} as typeof import("../../app/image-sitemap.xml/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 
 
 

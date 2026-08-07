@@ -7,12 +7,30 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const story = await db.story.findFirst({ where: { slug, status: "PUBLISHED", deletedAt: null } });
-  if (!story) return { title: "Neyroeros" };
+  const story = await db.story.findFirst({
+    where: { slug, status: "PUBLISHED", deletedAt: null },
+    include: { illustrations: { take: 1, orderBy: { sortOrder: "asc" } }, author: true },
+  });
+  if (!story) return {};
+  const imageUrl = story.illustrations[0] ? absoluteUrl(`/api/stories/images/${story.illustrations[0].id}`) : undefined;
   return {
     title: story.title,
     description: story.description?.slice(0, 155) ?? story.body.slice(0, 155),
     alternates: { canonical: `/stories/${story.slug}` },
+    openGraph: {
+      title: story.title,
+      description: story.description?.slice(0, 200) ?? undefined,
+      type: "article",
+      url: absoluteUrl(`/stories/${story.slug}`),
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: story.title }] : undefined,
+      locale: "ru_RU",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: story.title,
+      description: story.description?.slice(0, 200) ?? undefined,
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: story.title }] : undefined,
+    },
   };
 }
 
@@ -57,14 +75,14 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
         return <section className="story-section" key={index}>
           <p>{paragraph}</p>
           {illustration && <figure className="story-illustration">
-            <img src={`/api/stories/images/${illustration.id}`} alt={`${story.title} — иллюстрация ${imageIndex + 1}`}/>
-            <figcaption>Иллюстрация {imageIndex + 1}</figcaption>
+            <img src={`/api/stories/images/${illustration.id}`} alt={`${story.title} — иллюстрация ${imageIndex + 1}: AI-generated artwork`} loading="lazy" width={illustration.width} height={illustration.height}/>
+            <figcaption>{story.title} — иллюстрация {imageIndex + 1}</figcaption>
           </figure>}
         </section>;
       })}
       {story.illustrations.map((illustration, index) => !usedIllustrations.has(index) && <figure className="story-illustration" key={illustration.id}>
-        <img src={`/api/stories/images/${illustration.id}`} alt={`${story.title} — иллюстрация ${index + 1}`}/>
-        <figcaption>Иллюстрация {index + 1}</figcaption>
+        <img src={`/api/stories/images/${illustration.id}`} alt={`${story.title} — иллюстрация ${index + 1}: AI-generated artwork`} loading="lazy" width={illustration.width} height={illustration.height}/>
+        <figcaption>{story.title} — иллюстрация {index + 1}</figcaption>
       </figure>)}
     </div>
   </article>;

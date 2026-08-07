@@ -21,12 +21,27 @@ async function get(slug: string) {
 export async function generateMetadata({ params }: PageProps<"/artwork/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const a = await get(slug);
-  if (!a) return { title: "Neyroeros" };
+  if (!a) return {};
   const x = await localizeArtwork(a, await getLocale());
+  const imageUrl = absoluteUrl(`/api/images/preview/${a.id}`);
   return {
     title: x.title,
-    description: x.description?.slice(0, 155),
+    description: x.description?.slice(0, 155) ?? `AI art: ${x.title}`,
     alternates: { canonical: `/artwork/${a.slug}` },
+    openGraph: {
+      title: x.title,
+      description: x.description?.slice(0, 200) ?? undefined,
+      type: "article",
+      url: absoluteUrl(`/artwork/${a.slug}`),
+      images: [{ url: imageUrl, width: a.asset?.width ?? 1200, height: a.asset?.height ?? 630, alt: x.title }],
+      locale: "ru_RU",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: x.title,
+      description: x.description?.slice(0, 200) ?? undefined,
+      images: [{ url: imageUrl, width: a.asset?.width ?? 1200, height: a.asset?.height ?? 630, alt: x.title }],
+    },
   };
 }
 
@@ -72,8 +87,9 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
 
   const canonical = absoluteUrl(`/artwork/${a.slug}`);
   const imageUrl = absoluteUrl(`/api/images/preview/${a.id}`);
+  const imageAlt = `${a.title} — AI artwork by ${raw.author.displayName || "Neyroeros"}`;
   const schema = [
-    artworkSchema({ id: raw.id, slug: a.slug, title: a.title, description: a.description, imageUrl, creatorName: raw.author.displayName, publishedAt: raw.publishedAt }),
+    { ...artworkSchema({ id: raw.id, slug: a.slug, title: a.title, description: a.description, imageUrl, creatorName: raw.author.displayName, publishedAt: raw.publishedAt }), image: { "@type": "ImageObject", url: imageUrl, width: raw.asset?.width, height: raw.asset?.height, caption: a.title, description: a.description?.slice(0, 500) } },
     breadcrumbSchema([
       { name: "Главная", path: "/" },
       { name: "Категории", path: "/categories" },
@@ -84,8 +100,13 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
 
   return <section className="art-detail">
     <ArtworkNavigator current={a.slug} items={siblings} categorySlug={categorySlug}/>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}/>
-    <div className="art-image"><img src={`/api/images/preview/${a.id}`} alt={a.title}/></div>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([...schema, { "@context": "https://schema.org", "@type": "WebPage", url: canonical, primaryImageOfPage: { "@type": "ImageObject", url: imageUrl, width: raw.asset?.width, height: raw.asset?.height } }]) }}/>
+    <div className="art-image">
+      <figure style={{ margin: 0 }}>
+        <img src={`/api/images/preview/${a.id}`} alt={imageAlt} width={raw.asset?.width} height={raw.asset?.height} style={{ maxWidth: "100%", height: "auto" }}/>
+        <figcaption className="art-caption">{a.title} — {a.author.displayName || m.anonymous} · {a.category ? categoryLabel(a.category.slug, locale, a.category).name : m.aiArt}</figcaption>
+      </figure>
+    </div>
     <aside>
       <span className="eyebrow">{a.category ? categoryLabel(a.category.slug, locale, a.category).name : m.aiArt}</span>
       <h1>{a.title}</h1>
@@ -105,14 +126,14 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
           ? <form action={createCommentAction} className="comment-form"><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><button>Отправить</button></form>
           : <p className="comment-login"><Link href="/login">Войдите</Link>, чтобы поставить лайк или оставить комментарий.</p>}
         <div className="comment-list">
-          {comments.map((c) => <article key={c.id} className="comment"><div className="comment-avatar">{c.author.avatar ? <img src={`/api/avatars/${c.authorId}?v=${c.author.avatar.updatedAt.getTime()}`} alt=""/> : (c.author.displayName || c.author.email).slice(0, 1).toUpperCase()}</div><div><b>{c.author.displayName || c.author.email}</b><time>{new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale, { dateStyle: "medium" }).format(c.createdAt)}</time><p>{c.content}</p></div></article>)}
+          {comments.map((c) => <article key={c.id} className="comment"><div className="comment-avatar">{c.author.avatar ? <img src={`/api/avatars/${c.authorId}?v=${c.author.avatar.updatedAt.getTime()}`} alt="" loading="lazy" width={38} height={38}/> : (c.author.displayName || c.author.email).slice(0, 1).toUpperCase()}</div><div><b>{c.author.displayName || c.author.email}</b><time>{new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale, { dateStyle: "medium" }).format(c.createdAt)}</time><p>{c.content}</p></div></article>)}
           {!comments.length && <p className="no-comments">Комментариев пока нет. Будьте первым.</p>}
         </div>
       </section>
     </aside>
     {related.length > 0 && <div className="related">
       <h2>Похожие работы</h2>
-      <div className="masonry">{related.map((r) => <article className="card" key={r.id}><Link href={`/artwork/${r.slug}`}><img src={`/api/images/thumbnail/${r.id}`} alt={r.title} loading="lazy"/><div className="card-body"><span>{r.category ? categoryLabel(r.category.slug, locale, r.category).name : m.aiArt}</span><h3>{r.title}</h3><p>{r.author.displayName || m.anonymous}</p></div></Link></article>)}</div>
+      <div className="masonry">{related.map((r) => <article className="card" key={r.id}><Link href={`/artwork/${r.slug}`}><img src={`/api/images/thumbnail/${r.id}`} alt={`${r.title} — AI artwork`} loading="lazy" width={r.asset?.width} height={r.asset?.height}/><div className="card-body"><span>{r.category ? categoryLabel(r.category.slug, locale, r.category).name : m.aiArt}</span><h3>{r.title}</h3><p>{r.author.displayName || m.anonymous}</p></div></Link></article>)}</div>
     </div>}
   </section>;
 }

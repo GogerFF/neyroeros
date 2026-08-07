@@ -11,6 +11,7 @@
   "/favicon.ico/route": "/favicon.ico",
   "/robots.txt/route": "/robots.txt",
   "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/image-sitemap.xml/route": "/image-sitemap.xml",
   "/sitemap.xml/route": "/sitemap.xml",
   "/artwork/[slug]/page": "/artwork/[slug]",
   "/dashboard/stories/new/page": "/dashboard/stories/new",

@@ -12,8 +12,16 @@ export const metadata: Metadata = {
   title: { default: "Neyroeros", template: "%s · Neyroeros" },
   description: "Кураторская галерея AI-искусства для взрослых: работы, категории и рассказы. Только 18+.",
   alternates: { canonical: "/" },
-  openGraph: { siteName: "Neyroeros", type: "website", url: "https://neyroeros.com", locale: "ru_RU" },
+  openGraph: {
+    siteName: "Neyroeros",
+    type: "website",
+    url: "https://neyroeros.com",
+    locale: "ru_RU",
+    images: [{ url: "/og-default.webp", width: 1200, height: 630, alt: "Neyroeros — AI art gallery" }],
+  },
+  twitter: { card: "summary_large_image", site: "@neyroeros", images: [{ url: "/og-default.webp", width: 1200, height: 630, alt: "Neyroeros — AI art gallery" }] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+  other: { rating: "adult", "google-site-verification": "" },
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -22,7 +30,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
     getLocale(),
     getMessages(),
   ]);
-  return <html lang={locale === "zh" ? "zh-CN" : locale}><body>
+  return <html lang={locale === "zh" ? "zh-CN" : locale}>
+    <head><meta name="rating" content="adult"/></head>
+    <body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}/>
     <YandexMetrika/>
     <Header/>

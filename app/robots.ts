@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/dashboard", "/admin", "/login", "/register"],
     },
-    sitemap: "https://neyroeros.com/sitemap.xml",
+    sitemap: ["https://neyroeros.com/sitemap.xml", "https://neyroeros.com/image-sitemap.xml"],
     host: "https://neyroeros.com",
   };
 }

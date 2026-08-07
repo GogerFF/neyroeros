@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: PageProps<"/categories/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const c = await db.category.findUnique({ where: { slug } });
-  if (!c) return { title: "Neyroeros" };
+  if (!c) return {};
   return {
     title: c.name,
     description: c.description?.slice(0, 155),
