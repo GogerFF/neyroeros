@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { slugify } from "@/lib/utils";
+import { slugifyLatin } from "@/lib/utils";
 import { storeStoryIllustration } from "@/lib/storage/story-storage";
 
 export async function createStory(input: {
@@ -18,7 +18,7 @@ export async function createStory(input: {
     sortOrder: index,
   })));
   const category = await db.category.findUnique({ where: { slug: "stories" }, select: { id: true } });
-  const slug = `${slugify(input.title) || "story"}-${crypto.randomUUID().slice(0, 8)}`;
+  const slug = `${slugifyLatin(input.title) || "story"}-${crypto.randomUUID().slice(0, 8)}`;
   return db.story.create({
     data: {
       authorId: input.authorId,

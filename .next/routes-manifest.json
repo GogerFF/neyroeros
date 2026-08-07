@@ -181,6 +181,12 @@
       "namedRegex": "^/api/import(?:/)?$"
     },
     {
+      "page": "/api/stories/create",
+      "regex": "^/api/stories/create(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/stories/create(?:/)?$"
+    },
+    {
       "page": "/api/stories/manage",
       "regex": "^/api/stories/manage(?:/)?$",
       "routeKeys": {},
