@@ -47,6 +47,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 }
 
 
+// Validate ../../app/about/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/about">> = Specific
+  const handler = {} as typeof import("../../app/about/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/admin/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/admin">> = Specific
@@ -155,6 +164,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/rules/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/rules">> = Specific
+  const handler = {} as typeof import("../../app/rules/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/search/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/search">> = Specific
@@ -227,10 +245,28 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/cron/telegram-random/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/cron/telegram-random">> = Specific
+  const handler = {} as typeof import("../../app/api/cron/telegram-random/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/images/[variant]/[id]/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/images/[variant]/[id]">> = Specific
   const handler = {} as typeof import("../../app/api/images/[variant]/[id]/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/images/download/[id]/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/images/download/[id]">> = Specific
+  const handler = {} as typeof import("../../app/api/images/download/[id]/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

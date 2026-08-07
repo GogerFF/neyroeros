@@ -10,3 +10,9 @@
 
 .art-caption{color:var(--muted);font:italic .82rem/1.5 Georgia,serif;text-align:center;margin-top:10px;max-width:700px}
 /* Story and card images prevent CLS */ .story-illustration img,.card img{height:auto}
+.art-download{text-align:center;margin-top:18px}
+.art-download .button{background:var(--panel);color:var(--accent);border:1px solid var(--line);display:inline-flex;align-items:center;gap:8px;font-size:.85rem}
+.art-download .button:hover{background:var(--accent);color:#101108}
+.lead h2{font:1.4rem Georgia;color:var(--text);margin:2.2rem 0 .8rem}
+.lead ul,.lead ol{margin:0 0 1.5rem 1.5rem;line-height:1.7}
+.lead li{margin-bottom:.5rem}

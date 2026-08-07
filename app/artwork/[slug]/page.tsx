@@ -106,6 +106,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
         <img src={`/api/images/preview/${a.id}`} alt={imageAlt} width={raw.asset?.width} height={raw.asset?.height} style={{ maxWidth: "100%", height: "auto" }}/>
         <figcaption className="art-caption">{a.title} — {a.author.displayName || m.anonymous} · {a.category ? categoryLabel(a.category.slug, locale, a.category).name : m.aiArt}</figcaption>
       </figure>
+      <div className="art-download"><a href={`/api/images/download/${a.id}`} className="button" download>Скачать с водяным знаком</a></div>
     </div>
     <aside>
       <span className="eyebrow">{a.category ? categoryLabel(a.category.slug, locale, a.category).name : m.aiArt}</span>

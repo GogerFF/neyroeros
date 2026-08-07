@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { Header } from "@/components/header";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", site: "@neyroeros", images: [{ url: "/og-default.webp", width: 1200, height: 630, alt: "Neyroeros — AI art gallery" }] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
-  other: { rating: "adult", "google-site-verification": "" },
+  other: { rating: "adult", "pinterest-rich-pin": "true" },
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -37,7 +38,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <YandexMetrika/>
     <Header/>
     <main>{children}</main>
-    <footer><b>NEYROEROS</b><p>{m.footer}</p><small>© 2026 · {m.rules}</small></footer>
+    <footer><b>NEYROEROS</b><p>{m.footer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>Правила</Link> · <Link href="/about" style={{ color: "inherit" }}>О проекте</Link></small></footer>
     {!accepted && <AgeGate m={m}/>}
   </body></html>;
 }

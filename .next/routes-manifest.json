@@ -62,6 +62,14 @@
       "namedRegex": "^/api/avatars/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/images/download/[id]",
+      "regex": "^/api/images/download/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/images/download/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/api/images/[variant]/[id]",
       "regex": "^/api/images/([^/]+?)/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -131,6 +139,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
       "page": "/admin",
       "regex": "^/admin(?:/)?$",
       "routeKeys": {},
@@ -153,6 +167,12 @@
       "regex": "^/api/cron/publish(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/cron/publish(?:/)?$"
+    },
+    {
+      "page": "/api/cron/telegram-random",
+      "regex": "^/api/cron/telegram\\-random(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cron/telegram\\-random(?:/)?$"
     },
     {
       "page": "/api/import",
@@ -219,6 +239,12 @@
       "regex": "^/robots\\.txt(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/robots\\.txt(?:/)?$"
+    },
+    {
+      "page": "/rules",
+      "regex": "^/rules(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/rules(?:/)?$"
     },
     {
       "page": "/search",
