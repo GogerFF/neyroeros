@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", site: "@neyroeros", images: [{ url: "/og-default.webp", width: 1200, height: 630, alt: "Neyroeros — AI art gallery" }] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
-  other: { rating: "adult", "pinterest-rich-pin": "true" },
+  other: { rating: "adult", "pinterest-rich-pin": "true", "p:domain_verify": "0e96b8840d1ab015adb1df1e4dd8f66b" },
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
