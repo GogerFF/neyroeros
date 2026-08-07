@@ -137,6 +137,12 @@
       "namedRegex": "^/admin(?:/)?$"
     },
     {
+      "page": "/api/admin/moderate",
+      "regex": "^/api/admin/moderate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/moderate(?:/)?$"
+    },
+    {
       "page": "/api/ai/suggest",
       "regex": "^/api/ai/suggest(?:/)?$",
       "routeKeys": {},

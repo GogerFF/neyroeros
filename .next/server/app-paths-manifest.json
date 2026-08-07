@@ -1,6 +1,7 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/_global-error/page": "app/_global-error/page.js",
+  "/api/admin/moderate/route": "app/api/admin/moderate/route.js",
   "/api/ai/suggest/route": "app/api/ai/suggest/route.js",
   "/api/avatars/[id]/route": "app/api/avatars/[id]/route.js",
   "/api/cron/publish/route": "app/api/cron/publish/route.js",
@@ -23,6 +24,6 @@
   "/dashboard/page": "app/dashboard/page.js",
   "/page": "app/page.js",
   "/search/page": "app/search/page.js",
-  "/stories/page": "app/stories/page.js",
-  "/stories/[slug]/page": "app/stories/[slug]/page.js"
+  "/stories/[slug]/page": "app/stories/[slug]/page.js",
+  "/stories/page": "app/stories/page.js"
 }

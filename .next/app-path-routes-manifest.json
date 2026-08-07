@@ -1,6 +1,7 @@
 {
   "/_not-found/page": "/_not-found",
   "/_global-error/page": "/_global-error",
+  "/api/admin/moderate/route": "/api/admin/moderate",
   "/api/ai/suggest/route": "/api/ai/suggest",
   "/api/avatars/[id]/route": "/api/avatars/[id]",
   "/api/cron/publish/route": "/api/cron/publish",
@@ -23,6 +24,6 @@
   "/dashboard/page": "/dashboard",
   "/page": "/",
   "/search/page": "/search",
-  "/stories/page": "/stories",
-  "/stories/[slug]/page": "/stories/[slug]"
+  "/stories/[slug]/page": "/stories/[slug]",
+  "/stories/page": "/stories"
 }
