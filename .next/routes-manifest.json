@@ -181,10 +181,22 @@
       "namedRegex": "^/api/import(?:/)?$"
     },
     {
+      "page": "/api/stories/comment",
+      "regex": "^/api/stories/comment(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/stories/comment(?:/)?$"
+    },
+    {
       "page": "/api/stories/create",
       "regex": "^/api/stories/create(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/stories/create(?:/)?$"
+    },
+    {
+      "page": "/api/stories/like",
+      "regex": "^/api/stories/like(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/stories/like(?:/)?$"
     },
     {
       "page": "/api/stories/manage",

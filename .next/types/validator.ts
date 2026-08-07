@@ -290,6 +290,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/stories/comment/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/stories/comment">> = Specific
+  const handler = {} as typeof import("../../app/api/stories/comment/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/stories/create/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/stories/create">> = Specific
@@ -303,6 +312,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/stories/images/[id]">> = Specific
   const handler = {} as typeof import("../../app/api/stories/images/[id]/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/stories/like/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/stories/like">> = Specific
+  const handler = {} as typeof import("../../app/api/stories/like/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

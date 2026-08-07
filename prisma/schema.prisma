@@ -70,6 +70,8 @@ model User {
   moderationActions ModerationAction[]
   comments          Comment[]
   artworkLikes      ArtworkLike[]
+  storyComments     StoryComment[]
+  storyLikes        StoryLike[]
 }
 
 model UserAvatar {
@@ -271,6 +273,8 @@ model Story {
   updatedAt         DateTime            @updatedAt
   illustrations     StoryIllustration[]
   storyTranslations StoryTranslation[]
+  storyComments     StoryComment[]
+  storyLikes        StoryLike[]
 
   @@index([status, publishedAt])
   @@index([authorId, createdAt])
@@ -303,6 +307,31 @@ model StoryTranslation {
 
   @@unique([storyId, locale])
   @@index([locale])
+}
+
+model StoryLike {
+  storyId   String
+  userId    String
+  createdAt DateTime @default(now())
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, userId])
+  @@index([storyId])
+}
+
+model StoryComment {
+  id        String    @id @default(cuid())
+  storyId   String
+  authorId  String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  story     Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([storyId, createdAt])
 }
 
 model RateLimitEvent {

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Heart } from "lucide-react";
 import { notFound } from "next/navigation";
+import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { absoluteUrl, storySchema } from "@/lib/seo";
 
@@ -36,11 +39,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function StoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const session = await auth();
   const story = await db.story.findFirst({
     where: { slug, status: "PUBLISHED", deletedAt: null },
     include: { author: true, illustrations: { orderBy: { sortOrder: "asc" } } },
   });
   if (!story) notFound();
+
+  const [likeCount, liked, comments] = await Promise.all([
+    db.storyLike.count({ where: { storyId: story.id } }),
+    session?.user?.id ? db.storyLike.findUnique({ where: { storyId_userId: { storyId: story.id, userId: session.user.id } } }) : null,
+    db.storyComment.findMany({
+      where: { storyId: story.id, deletedAt: null },
+      include: { author: { select: { displayName: true, email: true, avatar: { select: { updatedAt: true } } } } },
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
 
   const paragraphs = story.body.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
   const illustrationIndex = (paragraphIndex: number) => {
@@ -85,5 +99,20 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
         <figcaption>{story.title} — иллюстрация {index + 1}</figcaption>
       </figure>)}
     </div>
+    <div className="story-social">
+      {session?.user
+        ? <form action="/api/stories/like" method="post"><input type="hidden" name="storyId" value={story.id}/><input type="hidden" name="slug" value={story.slug}/><button className={`like-button ${liked ? "liked" : ""}`}><Heart size={18} fill={liked ? "currentColor" : "none"} />{likeCount}</button></form>
+        : <Link className="like-button" href="/login"><Heart size={18}/>{likeCount}</Link>}
+    </div>
+    <section className="comments">
+      <h2>Комментарии <span>{comments.length}</span></h2>
+      {session?.user
+        ? <form action="/api/stories/comment" method="post" className="comment-form"><input type="hidden" name="storyId" value={story.id}/><input type="hidden" name="slug" value={story.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><button>Отправить</button></form>
+        : <p className="comment-login"><Link href="/login">Войдите</Link>, чтобы поставить лайк или оставить комментарий.</p>}
+      <div className="comment-list">
+        {comments.map((c) => <article key={c.id} className="comment"><div className="comment-avatar">{c.author.avatar ? <img src={`/api/avatars/${c.authorId}?v=${c.author.avatar.updatedAt.getTime()}`} alt="" loading="lazy" width={38} height={38}/> : (c.author.displayName || c.author.email).slice(0, 1).toUpperCase()}</div><div><b>{c.author.displayName || c.author.email}</b><time>{new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium" }).format(c.createdAt)}</time><p>{c.content}</p></div></article>)}
+        {!comments.length && <p className="no-comments">Комментариев пока нет. Будьте первым.</p>}
+      </div>
+    </section>
   </article>;
 }
