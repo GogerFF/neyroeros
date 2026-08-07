@@ -1,36 +1,30 @@
 {
-  "/_global-error/page": "/_global-error",
-<<<<<<< HEAD
-  "/api/admin/moderate/route": "/api/admin/moderate",
-=======
   "/_not-found/page": "/_not-found",
-  "/admin/page": "/admin",
->>>>>>> origin/master
+  "/_global-error/page": "/_global-error",
+  "/api/admin/moderate/route": "/api/admin/moderate",
   "/api/ai/suggest/route": "/api/ai/suggest",
-  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/api/avatars/[id]/route": "/api/avatars/[id]",
   "/api/cron/publish/route": "/api/cron/publish",
   "/api/images/[variant]/[id]/route": "/api/images/[variant]/[id]",
   "/api/import/route": "/api/import",
   "/api/stories/images/[id]/route": "/api/stories/images/[id]",
+  "/favicon.ico/route": "/favicon.ico",
+  "/robots.txt/route": "/robots.txt",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/sitemap.xml/route": "/sitemap.xml",
   "/artwork/[slug]/page": "/artwork/[slug]",
-  "/categories/[slug]/page": "/categories/[slug]",
-  "/categories/page": "/categories",
-  "/dashboard/page": "/dashboard",
-  "/dashboard/settings/page": "/dashboard/settings",
   "/dashboard/stories/new/page": "/dashboard/stories/new",
   "/dashboard/uploads/[id]/edit/page": "/dashboard/uploads/[id]/edit",
   "/dashboard/uploads/new/page": "/dashboard/uploads/new",
-  "/favicon.ico/route": "/favicon.ico",
   "/login/page": "/login",
-  "/page": "/",
   "/register/page": "/register",
-  "/robots.txt/route": "/robots.txt",
+  "/admin/page": "/admin",
+  "/categories/page": "/categories",
+  "/categories/[slug]/page": "/categories/[slug]",
+  "/dashboard/settings/page": "/dashboard/settings",
+  "/dashboard/page": "/dashboard",
+  "/page": "/",
   "/search/page": "/search",
-<<<<<<< HEAD
-=======
-  "/sitemap.xml/route": "/sitemap.xml",
->>>>>>> origin/master
-  "/stories/[slug]/page": "/stories/[slug]",
-  "/stories/page": "/stories"
+  "/stories/page": "/stories",
+  "/stories/[slug]/page": "/stories/[slug]"
 }

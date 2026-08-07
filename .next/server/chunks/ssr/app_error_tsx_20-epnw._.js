@@ -1,3 +1,0 @@
-module.exports=[78141,a=>{"use strict";var b=a.i(87924);a.s(["default",0,function({reset:a}){return(0,b.jsx)("section",{className:"auth",children:(0,b.jsxs)("div",{className:"panel",children:[(0,b.jsx)("h1",{children:"Что-то пошло не так"}),(0,b.jsx)("p",{children:"Мы уже зажигаем свет."}),(0,b.jsx)("button",{onClick:a,children:"Попробовать снова"})]})})}])}];
-
-//# sourceMappingURL=app_error_tsx_20-epnw._.js.map

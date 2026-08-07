@@ -10,7 +10,7 @@ const TRANSLIT: Record<string, string> = {
   э: "e", ю: "yu", я: "ya",
 };
 
-export function slugifyLatin(value: string) {
+function slugifyLatin(value: string) {
   return value.toLowerCase().trim()
     .split("")
     .map((ch) => TRANSLIT[ch] ?? ch)

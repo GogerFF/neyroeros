@@ -1,3 +1,0 @@
-module.exports=[66188,a=>{"use strict";var b=a.i(7997),c=a.i(95936);a.s(["default",0,function(){return(0,b.jsx)("section",{className:"auth",children:(0,b.jsxs)("div",{className:"panel",children:[(0,b.jsx)("span",{className:"eyebrow",children:"404"}),(0,b.jsx)("h1",{children:"Работа растворилась во тьме"}),(0,b.jsx)(c.default,{className:"button",href:"/",children:"Вернуться в галерею"})]})})}])},2894,a=>{a.n(a.i(66188))}];
-
-//# sourceMappingURL=app_not-found_tsx_1gi3i27._.js.map
