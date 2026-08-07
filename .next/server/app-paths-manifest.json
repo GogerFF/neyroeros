@@ -1,29 +1,36 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/_global-error/page": "app/_global-error/page.js",
+<<<<<<< HEAD
   "/api/admin/moderate/route": "app/api/admin/moderate/route.js",
+=======
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/page": "app/admin/page.js",
+>>>>>>> origin/master
   "/api/ai/suggest/route": "app/api/ai/suggest/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/avatars/[id]/route": "app/api/avatars/[id]/route.js",
   "/api/cron/publish/route": "app/api/cron/publish/route.js",
   "/api/images/[variant]/[id]/route": "app/api/images/[variant]/[id]/route.js",
+  "/api/import/route": "app/api/import/route.js",
   "/api/stories/images/[id]/route": "app/api/stories/images/[id]/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/robots.txt/route": "app/robots.txt/route.js",
-  "/sitemap.xml/route": "app/sitemap.xml/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/artwork/[slug]/page": "app/artwork/[slug]/page.js",
+  "/categories/[slug]/page": "app/categories/[slug]/page.js",
+  "/categories/page": "app/categories/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/settings/page": "app/dashboard/settings/page.js",
   "/dashboard/stories/new/page": "app/dashboard/stories/new/page.js",
   "/dashboard/uploads/[id]/edit/page": "app/dashboard/uploads/[id]/edit/page.js",
   "/dashboard/uploads/new/page": "app/dashboard/uploads/new/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/login/page": "app/login/page.js",
-  "/register/page": "app/register/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/categories/page": "app/categories/page.js",
-  "/categories/[slug]/page": "app/categories/[slug]/page.js",
-  "/dashboard/settings/page": "app/dashboard/settings/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
   "/page": "app/page.js",
+  "/register/page": "app/register/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
   "/search/page": "app/search/page.js",
+<<<<<<< HEAD
+=======
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+>>>>>>> origin/master
   "/stories/[slug]/page": "app/stories/[slug]/page.js",
   "/stories/page": "app/stories/page.js"
 }

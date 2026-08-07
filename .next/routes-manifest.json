@@ -155,6 +155,12 @@
       "namedRegex": "^/api/cron/publish(?:/)?$"
     },
     {
+      "page": "/api/import",
+      "regex": "^/api/import(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/import(?:/)?$"
+    },
+    {
       "page": "/categories",
       "regex": "^/categories(?:/)?$",
       "routeKeys": {},

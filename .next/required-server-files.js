@@ -104,7 +104,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\sklya\\Desktop\\html",
+    "outputFileTracingRoot": "C:\\Users\\sklya\\neyroeros-site",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -307,11 +307,11 @@ self.__SERVER_FILES_MANIFEST={
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "C:\\Users\\sklya\\Desktop\\html"
+      "root": "C:\\Users\\sklya\\neyroeros-site"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\sklya\\Desktop\\html",
+  "appDir": "C:\\Users\\sklya\\neyroeros-site",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",
@@ -322,8 +322,6 @@ self.__SERVER_FILES_MANIFEST={
     ".next\\server\\functions-config-manifest.json",
     ".next\\server\\middleware-manifest.json",
     ".next\\server\\middleware-build-manifest.js",
-    ".next\\server\\middleware-react-loadable-manifest.js",
-    ".next\\react-loadable-manifest.json",
     ".next\\server\\app-paths-manifest.json",
     ".next\\app-path-routes-manifest.json",
     ".next\\server\\server-reference-manifest.js",
