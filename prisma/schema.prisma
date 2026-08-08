@@ -24,6 +24,12 @@ enum ArtworkStatus {
   DELETED
 }
 
+enum HeroVideoStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
 enum QueueStatus {
   PENDING
   PROCESSING
@@ -260,6 +266,22 @@ model AiSuggestion {
   status     AiSuggestionStatus @default(PENDING)
   createdAt  DateTime           @default(now())
   reviewedAt DateTime?
+}
+
+model HeroVideo {
+  id          String          @id @default(cuid())
+  title       String
+  mp4Key      String          @unique
+  webmKey     String?         @unique
+  posterKey   String          @unique
+  sortOrder   Int             @default(0)
+  status      HeroVideoStatus @default(DRAFT)
+  durationSec Int
+  sizeBytes   Int
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([status, sortOrder])
 }
 
 model SiteSetting {

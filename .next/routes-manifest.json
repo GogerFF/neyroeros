@@ -70,6 +70,15 @@
       "namedRegex": "^/api/avatars/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/hero/[id]/[kind]",
+      "regex": "^/api/hero/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPkind": "nxtPkind"
+      },
+      "namedRegex": "^/api/hero/(?<nxtPid>[^/]+?)/(?<nxtPkind>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/api/images/download/[id]",
       "regex": "^/api/images/download/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -167,10 +176,28 @@
       "namedRegex": "^/admin(?:/)?$"
     },
     {
+      "page": "/admin/hero",
+      "regex": "^/admin/hero(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/hero(?:/)?$"
+    },
+    {
       "page": "/api/account/profile",
       "regex": "^/api/account/profile(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/account/profile(?:/)?$"
+    },
+    {
+      "page": "/api/admin/hero/manage",
+      "regex": "^/api/admin/hero/manage(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/hero/manage(?:/)?$"
+    },
+    {
+      "page": "/api/admin/hero/upload",
+      "regex": "^/api/admin/hero/upload(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/hero/upload(?:/)?$"
     },
     {
       "page": "/api/admin/moderate",

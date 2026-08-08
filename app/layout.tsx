@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import "./globals.css";
+import "./hero-video.css";
 import { Header } from "@/components/header";
 import { AgeGate } from "@/components/age-gate";
 import { getLocale, getMessages } from "@/lib/i18n-server";
