@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, Eye } from "lucide-react";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
@@ -9,6 +9,7 @@ import { getLocale, getMessages, localizeArtwork } from "@/lib/i18n-server";
 import { ArtworkNavigator } from "@/components/artwork-navigator";
 import { ShareButtons } from "@/components/share-buttons";
 import { createCommentAction, toggleLikeAction } from "@/app/actions";
+import { ArtworkViewTracker } from "@/components/artwork-view-tracker";
 import { absoluteUrl, artworkSchema, breadcrumbSchema } from "@/lib/seo";
 
 async function get(slug: string) {
@@ -99,6 +100,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
   ];
 
   return <section className="art-detail">
+    <ArtworkViewTracker artworkId={raw.id}/>
     <ArtworkNavigator current={a.slug} items={siblings} categorySlug={categorySlug}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([...schema, { "@context": "https://schema.org", "@type": "WebPage", url: canonical, primaryImageOfPage: { "@type": "ImageObject", url: imageUrl, width: raw.asset?.width, height: raw.asset?.height } }]) }}/>
     <div className="art-image">
@@ -116,6 +118,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
         {session?.user
           ? <form action={toggleLikeAction}><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><button className={`like-button ${liked ? "liked" : ""}`}><Heart size={18} fill={liked ? "currentColor" : "none"}/>{likeCount}</button></form>
           : <Link className="like-button" href="/login"><Heart size={18}/>{likeCount}</Link>}
+        <div className="view-count" title="Уникальные просмотры"><Eye size={17}/>{raw.viewCount}</div>
         <ShareButtons url={canonical} title={a.title} image={imageUrl}/>
       </div>
       <div className="author"><b>{a.author.displayName || m.anonymous}</b><span>{m.published} {new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale).format(a.publishedAt!)}</span></div>

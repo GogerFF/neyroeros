@@ -104,6 +104,7 @@ model Artwork {
   publishedAt       DateTime?
   hiddenAt          DateTime?
   deletedAt         DateTime?
+  viewCount         Int                   @default(0)
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
   asset             ArtworkAsset?
@@ -114,6 +115,7 @@ model Artwork {
   translations      ArtworkTranslation[]
   comments          Comment[]
   likes             ArtworkLike[]
+  views             ArtworkView[]
 
   @@index([status, publishedAt])
   @@index([authorId, createdAt])
@@ -156,6 +158,18 @@ model ArtworkLike {
 
   @@id([artworkId, userId])
   @@index([artworkId])
+}
+
+model ArtworkView {
+  id        String   @id @default(cuid())
+  artworkId String
+  viewerKey String
+  dayBucket String
+  viewedAt  DateTime @default(now())
+  artwork   Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+
+  @@unique([artworkId, viewerKey, dayBucket])
+  @@index([artworkId, viewedAt])
 }
 
 model ArtworkAsset {

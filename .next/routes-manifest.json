@@ -46,6 +46,14 @@
   },
   "dynamicRoutes": [
     {
+      "page": "/api/artworks/[id]/view",
+      "regex": "^/api/artworks/([^/]+?)/view(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/artworks/(?<nxtPid>[^/]+?)/view(?:/)?$"
+    },
+    {
       "page": "/api/auth/[...nextauth]",
       "regex": "^/api/auth/(.+?)(?:/)?$",
       "routeKeys": {
