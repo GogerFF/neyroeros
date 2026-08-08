@@ -59,6 +59,6 @@
   "/top/page": "app/top/page.js",
   "/trending/page": "app/trending/page.js",
   "/stories/[slug]/page": "app/stories/[slug]/page.js",
-  "/videos/[slug]/page": "app/videos/[slug]/page.js",
-  "/videos/page": "app/videos/page.js"
+  "/videos/page": "app/videos/page.js",
+  "/videos/[slug]/page": "app/videos/[slug]/page.js"
 }

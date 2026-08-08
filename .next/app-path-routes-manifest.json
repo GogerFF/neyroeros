@@ -59,6 +59,6 @@
   "/top/page": "/top",
   "/trending/page": "/trending",
   "/stories/[slug]/page": "/stories/[slug]",
-  "/videos/[slug]/page": "/videos/[slug]",
-  "/videos/page": "/videos"
+  "/videos/page": "/videos",
+  "/videos/[slug]/page": "/videos/[slug]"
 }
