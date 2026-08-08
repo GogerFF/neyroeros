@@ -1,25 +1,25 @@
 "use client";
 import { Volume2, VolumeX, Pause, Play } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 type HeroVideo = { id: string; title: string; durationSec: number; webmKey: string | null };
+
+function useReducedMotion() {
+  return useSyncExternalStore(
+    (cb) => { const mq = window.matchMedia("(prefers-reduced-motion: reduce)"); mq.addEventListener("change", cb); return () => mq.removeEventListener("change", cb); },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false // server fallback
+  );
+}
 
 export function HeroVideoSlideshow({ videos }: { videos: HeroVideo[] }) {
   const [index, setIndex] = useState(0);
   const [muted, setMuted] = useState(true);
   const [paused, setPaused] = useState(false);
-  const [reduce, setReduce] = useState(false);
   const [ready, setReady] = useState(false);
+  const reduce = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const playedRef = useRef(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduce(mq.matches);
-    const update = () => setReduce(mq.matches);
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
 
   // Reset ready when index changes
   useEffect(() => {
@@ -27,7 +27,7 @@ export function HeroVideoSlideshow({ videos }: { videos: HeroVideo[] }) {
     playedRef.current = false;
   }, [index]);
 
-  // Play when video is ready and not paused
+  // Play when video is ready
   useEffect(() => {
     const v = videoRef.current;
     if (!v || paused || reduce || !ready || playedRef.current) return;
@@ -35,6 +35,11 @@ export function HeroVideoSlideshow({ videos }: { videos: HeroVideo[] }) {
     v.muted = muted;
     v.play().then(() => { playedRef.current = true; }).catch(() => {});
   }, [ready, paused, reduce, muted, index]);
+
+  // Sync mute
+  useEffect(() => {
+    if (videoRef.current) videoRef.current.muted = muted;
+  }, [muted, index]);
 
   // Auto-advance
   useEffect(() => {
@@ -51,7 +56,7 @@ export function HeroVideoSlideshow({ videos }: { videos: HeroVideo[] }) {
 
   return <section className="video-hero">
     <div className="video-stage">
-      <video ref={videoRef} muted playsInline key={videos[index].id} poster={`/api/hero/${videos[index].id}/poster`} onCanPlay={onCanPlay} onLoadedMetadata={onCanPlay} style={{ opacity: ready ? 1 : 0, transition: "opacity .4s" }}>
+      <video ref={videoRef} muted playsInline key={videos[index].id} poster={`/api/hero/${videos[index].id}/poster`} onCanPlay={onCanPlay} onLoadedMetadata={onCanPlay}>
         <source src={`/api/hero/${videos[index].id}/mp4`} type="video/mp4"/>
         {videos[index].webmKey && <source src={`/api/hero/${videos[index].id}/webm`} type="video/webm"/>}
       </video>
