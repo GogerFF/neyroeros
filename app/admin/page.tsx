@@ -27,7 +27,7 @@ export default async function Admin() {
     <span className="eyebrow">{m.eye}</span>
     <h1>{m.title}</h1>
 
-    <Link className="ghost" href="/admin/hero">Видео hero</Link>
+    <Link className="ghost" href="/admin/hero">Видео hero</Link><Link className="ghost" href="/admin/videos">Модерация видео</Link>
     <form action={createCategoryAction} className="panel category-admin-form">
       <h2>Новая категория</h2>
       <label>Название<input name="name" required minLength={2} maxLength={60} placeholder="Например: Cyber Dreams"/></label>

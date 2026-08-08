@@ -104,6 +104,23 @@
       "namedRegex": "^/api/stories/images/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/videos/[id]/view",
+      "regex": "^/api/videos/([^/]+?)/view(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/videos/(?<nxtPid>[^/]+?)/view(?:/)?$"
+    },
+    {
+      "page": "/api/videos/[id]/[kind]",
+      "regex": "^/api/videos/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid",
+        "nxtPkind": "nxtPkind"
+      },
+      "namedRegex": "^/api/videos/(?<nxtPid>[^/]+?)/(?<nxtPkind>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/artwork/[slug]",
       "regex": "^/artwork/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -142,6 +159,14 @@
         "nxtPslug": "nxtPslug"
       },
       "namedRegex": "^/stories/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/videos/[slug]",
+      "regex": "^/videos/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/videos/(?<nxtPslug>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -182,6 +207,12 @@
       "namedRegex": "^/admin/hero(?:/)?$"
     },
     {
+      "page": "/admin/videos",
+      "regex": "^/admin/videos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/videos(?:/)?$"
+    },
+    {
       "page": "/api/account/profile",
       "regex": "^/api/account/profile(?:/)?$",
       "routeKeys": {},
@@ -204,6 +235,12 @@
       "regex": "^/api/admin/moderate(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/admin/moderate(?:/)?$"
+    },
+    {
+      "page": "/api/admin/videos/moderate",
+      "regex": "^/api/admin/videos/moderate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/videos/moderate(?:/)?$"
     },
     {
       "page": "/api/ai/suggest",
@@ -266,6 +303,30 @@
       "namedRegex": "^/api/stories/manage(?:/)?$"
     },
     {
+      "page": "/api/videos/comment",
+      "regex": "^/api/videos/comment(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/videos/comment(?:/)?$"
+    },
+    {
+      "page": "/api/videos/create",
+      "regex": "^/api/videos/create(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/videos/create(?:/)?$"
+    },
+    {
+      "page": "/api/videos/like",
+      "regex": "^/api/videos/like(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/videos/like(?:/)?$"
+    },
+    {
+      "page": "/api/videos/manage",
+      "regex": "^/api/videos/manage(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/videos/manage(?:/)?$"
+    },
+    {
       "page": "/categories",
       "regex": "^/categories(?:/)?$",
       "routeKeys": {},
@@ -300,6 +361,12 @@
       "regex": "^/dashboard/uploads/new(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/dashboard/uploads/new(?:/)?$"
+    },
+    {
+      "page": "/dashboard/videos/new",
+      "regex": "^/dashboard/videos/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/videos/new(?:/)?$"
     },
     {
       "page": "/discover",
@@ -378,6 +445,12 @@
       "regex": "^/trending(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/trending(?:/)?$"
+    },
+    {
+      "page": "/videos",
+      "regex": "^/videos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/videos(?:/)?$"
     }
   ],
   "dataRoutes": [],

@@ -74,10 +74,13 @@ model User {
   updatedAt         DateTime           @updatedAt
   disabledAt        DateTime?
   artworks          Artwork[]
+  videos            Video[]
   stories           Story[]
   moderationActions ModerationAction[]
   comments          Comment[]
   artworkLikes      ArtworkLike[]
+  videoLikes        VideoLike[]
+  videoComments     VideoComment[]
   storyComments     StoryComment[]
   storyLikes        StoryLike[]
 }
@@ -221,6 +224,7 @@ model Category {
   isActive    Boolean   @default(true)
   artworks    Artwork[]
   stories     Story[]
+  videos      Video[]
 }
 
 model ModerationAction {
@@ -266,6 +270,77 @@ model AiSuggestion {
   status     AiSuggestionStatus @default(PENDING)
   createdAt  DateTime           @default(now())
   reviewedAt DateTime?
+}
+
+model Video {
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  authorId       String
+  author         User           @relation(fields: [authorId], references: [id])
+  title          String
+  description    String?
+  sourceLocale   String         @default("ru")
+  status         ArtworkStatus  @default(DRAFT)
+  categoryId     String?
+  category       Category?      @relation(fields: [categoryId], references: [id])
+  moderationNote String?
+  submittedAt    DateTime?
+  approvedAt     DateTime?
+  publishedAt    DateTime?
+  hiddenAt       DateTime?
+  deletedAt      DateTime?
+  videoKey       String         @unique
+  posterKey      String         @unique
+  mimeType       String
+  sizeBytes      Int
+  durationSec    Int
+  viewCount      Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  likes          VideoLike[]
+  comments       VideoComment[]
+  views          VideoView[]
+
+  @@index([status, publishedAt])
+  @@index([authorId, createdAt])
+  @@index([categoryId, publishedAt])
+}
+
+model VideoLike {
+  videoId   String
+  userId    String
+  createdAt DateTime @default(now())
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([videoId, userId])
+  @@index([videoId])
+}
+
+model VideoComment {
+  id        String    @id @default(cuid())
+  videoId   String
+  authorId  String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  video     Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([videoId, createdAt])
+}
+
+model VideoView {
+  id        String   @id @default(cuid())
+  videoId   String
+  viewerKey String
+  dayBucket String
+  viewedAt  DateTime @default(now())
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([videoId, viewerKey, dayBucket])
+  @@index([videoId, viewedAt])
 }
 
 model HeroVideo {

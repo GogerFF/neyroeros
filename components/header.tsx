@@ -15,8 +15,9 @@ export async function Header(){
     <Link href="/newcomers">{m.newcomers}</Link>
     <Link href="/discover">{m.discover}</Link>
     <Link href="/collections">{m.collections}</Link>
+    <Link href="/videos">{m.videos}</Link>
     <Link href="/stories">{m.stories}</Link>
-    {isAdmin&&<details className="admin-menu"><summary>Админ</summary><div className="admin-drop"><Link href="/admin">Модерация</Link><Link href="/admin/hero">Видео hero</Link></div></details>}
+    {isAdmin&&<details className="admin-menu"><summary>{m.admin}</summary><div className="admin-drop"><Link href="/admin">{m.moderation}</Link><Link href="/admin/videos">{m.videoModeration}</Link><Link href="/admin/hero">{m.heroVideo}</Link></div></details>}
   </nav>
   <div>
     <Link href="/search" className="ghost">{m.search}</Link>

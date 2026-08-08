@@ -75,6 +75,16 @@ export function storySchema(input: {
   };
 }
 
+export function videoSchema(input: { title: string; slug: string; description: string | null; authorName: string | null; datePublished: Date | null; posterUrl: string; contentUrl: string; durationSec: number }) {
+  return {
+    "@context": "https://schema.org", "@type": "VideoObject", name: input.title,
+    description: input.description?.slice(0, 155) ?? input.title, thumbnailUrl: input.posterUrl,
+    contentUrl: input.contentUrl, url: absoluteUrl(`/videos/${input.slug}`),
+    duration: `PT${input.durationSec}S`, uploadDate: input.datePublished?.toISOString(),
+    author: { "@type": "Person", name: input.authorName ?? "Neyroeros" }, isFamilyFriendly: false,
+  };
+}
+
 export function collectionSchema(input: { name: string; slug: string; description: string | null }) {
   return {
     "@context": "https://schema.org",
