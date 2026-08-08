@@ -275,6 +275,12 @@
       "namedRegex": "^/dashboard/uploads/new(?:/)?$"
     },
     {
+      "page": "/discover",
+      "regex": "^/discover(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/discover(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
@@ -291,6 +297,12 @@
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/newcomers",
+      "regex": "^/newcomers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/newcomers(?:/)?$"
     },
     {
       "page": "/register",
@@ -327,6 +339,18 @@
       "regex": "^/stories(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/stories(?:/)?$"
+    },
+    {
+      "page": "/top",
+      "regex": "^/top(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/top(?:/)?$"
+    },
+    {
+      "page": "/trending",
+      "regex": "^/trending(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/trending(?:/)?$"
     }
   ],
   "dataRoutes": [],
