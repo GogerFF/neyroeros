@@ -227,6 +227,24 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/artworks/create/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/artworks/create">> = Specific
+  const handler = {} as typeof import("../../app/api/artworks/create/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/artworks/manage/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/artworks/manage">> = Specific
+  const handler = {} as typeof import("../../app/api/artworks/manage/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/auth/[...nextauth]/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/auth/[...nextauth]">> = Specific

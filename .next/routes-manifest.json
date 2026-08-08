@@ -163,6 +163,18 @@
       "namedRegex": "^/api/ai/suggest(?:/)?$"
     },
     {
+      "page": "/api/artworks/create",
+      "regex": "^/api/artworks/create(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/artworks/create(?:/)?$"
+    },
+    {
+      "page": "/api/artworks/manage",
+      "regex": "^/api/artworks/manage(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/artworks/manage(?:/)?$"
+    },
+    {
       "page": "/api/cron/publish",
       "regex": "^/api/cron/publish(?:/)?$",
       "routeKeys": {},
