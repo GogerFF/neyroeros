@@ -25,7 +25,7 @@ export default function About() {
       <p>Мы храним email и отображаемое имя авторов исключительно для работы платформы. Изображения хранятся на защищённых серверах. Данные не передаются третьим лицам и не используются для рекламы.</p>
 
       <h2>Контакты</h2>
-      <p>По вопросам сотрудничества, удаления контента и иным запросам: <a href="mailto:admin@neyroeros.com" style={{ color: "var(--accent)" }}>admin@neyroeros.com</a>.</p>
+      <p>По вопросам сотрудничества, удаления контента и иным запросам: <a href="mailto:sklyarenkoff@gmail.com" style={{ color: "var(--accent)" }}>sklyarenkoff@gmail.com</a>.</p>
     </div>
   </section>;
 }
