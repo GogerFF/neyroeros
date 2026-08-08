@@ -11,12 +11,12 @@ test.describe("Phase 1 critical path", () => {
     await page.fill('input[name="password"]', "Test1234!ab");
     await page.fill('input[name="displayName"]', "Test Author");
     await page.fill('input[name="website"]', "");
-    await page.evaluate(() => { const fd = new FormData(); fd.set("startedAt", String(Date.now() - 2000)); (document.querySelector('form') as HTMLFormElement).requestSubmit(fd); });
+    await page.evaluate(() => { const el = document.querySelector<HTMLInputElement>('input[name="startedAt"]'); if (el) { el.value = String(Date.now() - 2000); (document.querySelector('form') as HTMLFormElement).requestSubmit(); } });
     await page.waitForURL(/dashboard/, { timeout: 10000 });
 
     // 2. Navigate to upload new artwork
     await page.click('a[href="/dashboard/uploads/new"]');
-    await page.waitForURL(/uploads\\/new/);
+    await page.waitForURL(/uploads\/new/);
 
     // 3. Fill upload form
     await page.fill('input[name="title"]', "E2E Test Artwork");
