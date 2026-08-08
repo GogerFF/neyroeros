@@ -31,8 +31,8 @@ export async function POST(request: Request) {
     const stored = await storeHeroMedia(mp4, poster, webm instanceof File ? webm : undefined);
     const last = await db.heroVideo.aggregate({ _max: { sortOrder: true } });
     await db.heroVideo.create({ data: { title, durationSec, ...stored, sortOrder: (last._max.sortOrder ?? 0) + 1, status: "ACTIVE" } });
-  } catch (e: any) {
-    redirect(`/admin/hero?error=upload-failed&reason=${encodeURIComponent(e?.message || "unknown")}`);
+  } catch (e: unknown) {
+    redirect(`/admin/hero?error=upload-failed&reason=${encodeURIComponent(e instanceof Error ? e.message : "unknown")}`);
   }
 
   revalidatePath("/");
