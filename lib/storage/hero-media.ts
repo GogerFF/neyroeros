@@ -5,7 +5,7 @@ import sharp from "sharp";
 import { detectImageType } from "@/lib/storage/signature";
 
 const root = path.resolve(process.env.STORAGE_ROOT || "storage/uploads");
-const MAX_VIDEO_BYTES = 50 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 30 * 1024 * 1024;  // 30 MB — shared hosting Passenger limit
 
 function safe(key: string) {
   const target = path.resolve(root, key);
@@ -25,11 +25,12 @@ export function heroDurationIsAllowed(durationSec: number) {
 
 export async function storeHeroMedia(video: File, poster: File, webm?: File) {
   const videoData = Buffer.from(await video.arrayBuffer());
-  if (videoData.length > MAX_VIDEO_BYTES) throw new Error("Видео больше 50 МБ");
+  if (videoData.length > MAX_VIDEO_BYTES) throw new Error(`Видео больше ${MAX_VIDEO_BYTES / 1024 / 1024} МБ`);
   const videoMime = detectHeroVideoType(videoData);
   if (videoMime !== "video/mp4") throw new Error("Основной клип должен быть в MP4");
 
   const posterData = Buffer.from(await poster.arrayBuffer());
+  if (posterData.length > 5 * 1024 * 1024) throw new Error("Poster не должен превышать 5 МБ");
   detectImageType(posterData);
   const posterMeta = await sharp(posterData).metadata();
   if (!posterMeta.width || !posterMeta.height) throw new Error("Poster-изображение повреждено");
@@ -37,7 +38,7 @@ export async function storeHeroMedia(video: File, poster: File, webm?: File) {
   let webmData: Buffer | undefined;
   if (webm && webm.size > 0) {
     webmData = Buffer.from(await webm.arrayBuffer());
-    if (webmData.length > MAX_VIDEO_BYTES) throw new Error("WebM больше 50 МБ");
+    if (webmData.length > MAX_VIDEO_BYTES) throw new Error(`WebM больше ${MAX_VIDEO_BYTES / 1024 / 1024} МБ`);
     if (detectHeroVideoType(webmData) !== "video/webm") throw new Error("Дополнительный файл должен быть WebM");
   }
 
