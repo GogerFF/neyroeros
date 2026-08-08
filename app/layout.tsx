@@ -39,7 +39,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <YandexMetrika/>
     <Header/>
     <main>{children}</main>
-    <footer><b>NEYROEROS</b><p>{m.footer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>Правила</Link> · <Link href="/about" style={{ color: "inherit" }}>О проекте</Link></small></footer>
+    <footer><b>NEYROEROS</b><p>{m.footer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>{m.footerRules}</Link> · <Link href="/about" style={{ color: "inherit" }}>{m.footerAbout}</Link></small></footer>
     {!accepted && <AgeGate m={m}/>}
   </body></html>;
 }
