@@ -95,6 +95,14 @@
       "namedRegex": "^/artwork/(?<nxtPslug>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/authors/[handle]",
+      "regex": "^/authors/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPhandle": "nxtPhandle"
+      },
+      "namedRegex": "^/authors/(?<nxtPhandle>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/categories/[slug]",
       "regex": "^/categories/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -149,6 +157,12 @@
       "regex": "^/admin(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/api/account/profile",
+      "regex": "^/api/account/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/account/profile(?:/)?$"
     },
     {
       "page": "/api/admin/moderate",

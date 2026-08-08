@@ -60,6 +60,8 @@ model User {
   email             String             @unique
   passwordHash      String
   displayName       String?
+  handle            String?            @unique
+  bio               String?
   avatar            UserAvatar?
   role              UserRole           @default(USER)
   createdAt         DateTime           @default(now())
