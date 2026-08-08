@@ -33,8 +33,8 @@
   "/login/page": "/login",
   "/register/page": "/register",
   "/about/page": "/about",
-  "/admin/hero/page": "/admin/hero",
   "/admin/page": "/admin",
+  "/admin/hero/page": "/admin/hero",
   "/authors/[handle]/page": "/authors/[handle]",
   "/categories/[slug]/page": "/categories/[slug]",
   "/categories/page": "/categories",
@@ -46,8 +46,8 @@
   "/page": "/",
   "/rules/page": "/rules",
   "/search/page": "/search",
-  "/top/page": "/top",
   "/stories/page": "/stories",
+  "/top/page": "/top",
   "/trending/page": "/trending",
   "/stories/[slug]/page": "/stories/[slug]"
 }
