@@ -52,7 +52,7 @@ export async function storeHeroMedia(video: File, poster: File, webm?: File) {
     writeFile(safe(posterKey), await sharp(posterData).rotate().resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 84 }).toBuffer()),
     ...(webmData && webmKey ? [writeFile(safe(webmKey), webmData)] : []),
   ]);
-  return { mp4Key, webmKey, posterKey, sizeBytes: videoData.length, posterWidth: posterMeta.width, posterHeight: posterMeta.height };
+  return { mp4Key, webmKey, posterKey, sizeBytes: videoData.length };
 }
 
 export const readHeroMedia = (key: string) => readFile(safe(key));
