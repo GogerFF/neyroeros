@@ -46,8 +46,8 @@
   "/page": "/",
   "/rules/page": "/rules",
   "/search/page": "/search",
-  "/stories/page": "/stories",
   "/top/page": "/top",
   "/trending/page": "/trending",
-  "/stories/[slug]/page": "/stories/[slug]"
+  "/stories/[slug]/page": "/stories/[slug]",
+  "/stories/page": "/stories"
 }

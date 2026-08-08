@@ -46,8 +46,8 @@
   "/page": "app/page.js",
   "/rules/page": "app/rules/page.js",
   "/search/page": "app/search/page.js",
-  "/stories/page": "app/stories/page.js",
   "/top/page": "app/top/page.js",
   "/trending/page": "app/trending/page.js",
-  "/stories/[slug]/page": "app/stories/[slug]/page.js"
+  "/stories/[slug]/page": "app/stories/[slug]/page.js",
+  "/stories/page": "app/stories/page.js"
 }
