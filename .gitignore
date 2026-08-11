@@ -48,3 +48,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .hermes/
+
+# MiniMax H3 Prompt Lab runtime artifacts
+/minimax-h3-direct/__pycache__/
+/minimax-h3-direct/generated/
+/minimax-h3-direct/saved_prompts.json
