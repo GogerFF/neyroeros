@@ -12,6 +12,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
   return [
     { url: "https://neyroeros.com", lastModified: new Date(), changeFrequency: "daily", priority: 1 },
+    { url: "https://neyroeros.com/about", lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: "https://neyroeros.com/rules", lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: "https://neyroeros.com/collections", lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
+    { url: "https://neyroeros.com/top", lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
+    { url: "https://neyroeros.com/trending", lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
+    { url: "https://neyroeros.com/newcomers", lastModified: new Date(), changeFrequency: "daily", priority: 0.65 },
+    { url: "https://neyroeros.com/discover", lastModified: new Date(), changeFrequency: "daily", priority: 0.65 },
     { url: "https://neyroeros.com/categories", lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: "https://neyroeros.com/videos", lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
     { url: "https://neyroeros.com/stories", lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },

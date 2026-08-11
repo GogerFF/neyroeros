@@ -54,6 +54,35 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/llms.txt": {
+      "initialHeaders": {
+        "cache-control": "public, max-age=3600",
+        "content-type": "text/plain; charset=utf-8",
+        "x-next-cache-tags": "_N_T_/layout,_N_T_/llms.txt/layout,_N_T_/llms.txt/route,_N_T_/llms.txt"
+      },
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/llms.txt",
+      "dataRoute": null,
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/robots.txt": {
       "initialHeaders": {
         "cache-control": "public, max-age=0, must-revalidate",
@@ -87,8 +116,8 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "658cd3d87b4ed50ea83e6312b1564995",
-    "previewModeSigningKey": "3ad95ef574be595eab6747158f5c819c91102ca0a92f4dbec2978e1822358151",
-    "previewModeEncryptionKey": "5d8c2543b41bb4810a967b891f2ec4f61b77ec9f92ae8960c2aa51af6ae79672"
+    "previewModeId": "20dadfd1c2aaaf1fd88fa21f3771f1ac",
+    "previewModeSigningKey": "789c2deeef98af40160fe58f0f3d51d908f8d4a2503ca574a8e9dc4de7260e66",
+    "previewModeEncryptionKey": "3725f2dea57036421ef57af17ff139194663aff09665543af2ab50572276942c"
   }
 }

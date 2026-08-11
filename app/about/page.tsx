@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n-server";
+
+export const metadata: Metadata = {
+  title: "О Neyroeros",
+  description: "О Neyroeros: курируемая 18+ платформа AI-искусства, ручная модерация, правила публикации и контакты.",
+  alternates: { canonical: "/about" },
+};
 
 const content = {
   ru: {

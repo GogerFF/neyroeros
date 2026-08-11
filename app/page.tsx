@@ -18,9 +18,9 @@ export default async function Home() {
 
   return <>
     {activeVideos.length > 0 ? <HeroVideoSlideshow videos={activeVideos} previews={newest.map(({ id, slug, title }) => ({ id, slug, title }))}/> : <section className="hero hero-rich">
-      <div className="hero-copy"><span className="eyebrow">{m.heroEye}</span><h1>{m.heroTitle}</h1><p>{m.heroText}</p><div className="hero-actions"><Link className="button" href="/dashboard/uploads/new">{m.publish}</Link><Link className="ghost" href="/trending">Смотреть горячее</Link></div></div>
+      <div className="hero-copy"><span className="eyebrow">{m.heroEye}</span><h1>{m.heroTitle}</h1><p>{m.heroText}</p><div className="hero-actions"><Link className="button" href="/dashboard/uploads/new">{m.publish}</Link><Link className="ghost" href="/trending">{m.trendingCta}</Link></div></div>
       {newest.length > 0 && <div className="hero-preview" aria-label={m.newWorks}>{newest.map((art, index) => <Link className={`hero-preview-card hero-preview-${index}`} href={`/artwork/${art.slug}`} key={art.id}><img src={`/api/images/preview/${art.id}`} alt={art.title}/><span>{art.title}</span></Link>)}</div>}
     </section>}
-    <section className="section latest-section"><div className="section-title latest-heading"><div><span className="eyebrow"><Sparkles size={13}/> {m.fresh}</span><h2>{m.newWorks}</h2><p>Свежие одобренные работы — появляются здесь сразу после модерации.</p></div><Link className="latest-all" href="/search">{m.all}<ArrowUpRight size={18}/></Link></div><ArtworkGrid items={works} locale={locale} m={m}/></section>
+    <section className="section latest-section"><div className="section-title latest-heading"><div><span className="eyebrow"><Sparkles size={13}/> {m.fresh}</span><h2>{m.newWorks}</h2><p>{m.latestDescription}</p></div><Link className="latest-all" href="/search">{m.all}<ArrowUpRight size={18}/></Link></div><ArtworkGrid items={works} locale={locale} m={m}/></section>
   </>;
 }
