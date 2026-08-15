@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { ArtworkGrid } from "@/components/artwork-grid";
@@ -36,6 +37,22 @@ export default async function TagPage({ params }: Params) {
     take: 120,
   });
   const works = await localizeArtworks(artworks, locale);
+  const related = await db.tag.findMany({
+    where: {
+      NOT: { id: t.id },
+      artworks: { some: { artwork: { status: "PUBLISHED", deletedAt: null, tags: { some: { tagId: t.id } } } } },
+    },
+    include: { _count: { select: { artworks: true } } },
+    orderBy: { artworks: { _count: "desc" } },
+    take: 16,
+  });
+  const fallback = related.length >= 6 ? [] : await db.tag.findMany({
+    where: { NOT: { id: t.id }, artworks: { some: { artwork: { status: "PUBLISHED", deletedAt: null } } } },
+    include: { _count: { select: { artworks: true } } },
+    orderBy: { artworks: { _count: "desc" } },
+    take: 16 - related.length,
+  });
+  const crossLinks = [...related, ...fallback.filter(f => !related.some(r => r.id === f.id))];
   const schema = [
     collectionSchema({ name: `#${t.name}`, slug: `tags/${t.slug}`, description: `AI-арт по тегу ${t.name}` }),
     breadcrumbSchema([
@@ -51,5 +68,13 @@ export default async function TagPage({ params }: Params) {
     <p className="lead">Коллекция из {t._count.artworks} работ по тегу «{t.name}». Кураторская галерея нейро-искусства: портреты, фэнтези-миры, киберпанк-сцены и стилистические эксперименты.</p>
     <p className="category-hint">Откройте работу и листайте подборку стрелками ← → или кнопками на странице.</p>
     <ArtworkGrid items={works} locale={locale} m={m}/>
+    {crossLinks.length > 0 && <nav className="tag-cross" aria-label="Похожие теги">
+      <h2>Похожие теги</h2>
+      <div className="tags">
+        {crossLinks.map(c => <Link href={`/tags/${c.slug}`} key={c.id} className="tag-pill">
+          #{c.name} <span>{c._count.artworks}</span>
+        </Link>)}
+      </div>
+    </nav>}
   </section>;
 }

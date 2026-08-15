@@ -22,3 +22,5 @@
 .tag-pill{display:inline-flex;align-items:center;gap:.5rem;color:#c5c1ca;background:#202026;border:1px solid var(--line);border-radius:999px;padding:.55rem .95rem;font-size:.85rem;font-weight:600}
 .tag-pill:hover{border-color:var(--accent);color:var(--text);transform:translateY(-2px)}
 .tag-pill span{color:var(--muted);font-size:.72rem}
+.tag-cross{border-top:1px solid var(--line);margin-top:3rem;padding-top:2rem}
+.tag-cross h2{color:var(--text);margin:0 0 1.2rem;font:1.6rem Georgia,serif}
