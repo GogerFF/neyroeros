@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://neyroeros.com"),
   title: { default: "Neyroeros", template: "%s · Neyroeros" },
   description: "Кураторская галерея AI-искусства для взрослых: работы, категории и рассказы. Только 18+.",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/", types: { "application/rss+xml": "https://neyroeros.com/feed.xml" } },
   openGraph: {
     siteName: "Neyroeros",
     type: "website",

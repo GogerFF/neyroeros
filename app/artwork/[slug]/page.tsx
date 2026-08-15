@@ -122,7 +122,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
         <ShareButtons url={canonical} title={a.title} image={imageUrl}/>
       </div>
       <div className="author"><b>{a.author.displayName || m.anonymous}</b><span>{m.published} {new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale).format(a.publishedAt!)}</span></div>
-      <div className="tags">{a.tags.map((x) => <Link href={`/search?q=${encodeURIComponent(x.tag.name)}`} key={x.tagId}>#{x.tag.name}</Link>)}</div>
+      <div className="tags">{a.tags.map((x) => <Link href={`/tags/${x.tag.slug}`} key={x.tagId}>#{x.tag.name}</Link>)}</div>
       <small>{m.moderated}</small>
       <section className="comments">
         <h2>Комментарии <span>{comments.length}</span></h2>
