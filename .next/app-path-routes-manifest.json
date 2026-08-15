@@ -32,6 +32,7 @@
   "/api/images/download/[id]/route": "/api/images/download/[id]",
   "/api/cron/telegram-random/route": "/api/cron/telegram-random",
   "/image-sitemap.xml/route": "/image-sitemap.xml",
+  "/feed.xml/route": "/feed.xml",
   "/llms.txt/route": "/llms.txt",
   "/sitemap.xml/route": "/sitemap.xml",
   "/artwork/[slug]/page": "/artwork/[slug]",
@@ -57,9 +58,11 @@
   "/rules/page": "/rules",
   "/search/page": "/search",
   "/stories/page": "/stories",
+  "/tags/[slug]/page": "/tags/[slug]",
+  "/stories/[slug]/page": "/stories/[slug]",
+  "/tags/page": "/tags",
   "/top/page": "/top",
   "/trending/page": "/trending",
-  "/stories/[slug]/page": "/stories/[slug]",
   "/videos/page": "/videos",
   "/videos/[slug]/page": "/videos/[slug]"
 }

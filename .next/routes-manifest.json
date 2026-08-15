@@ -36,6 +36,16 @@
         }
       ],
       "regex": "^(?:/(.*))(?:/)?$"
+    },
+    {
+      "source": "/api/images/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2592000, stale-while-revalidate=86400"
+        }
+      ],
+      "regex": "^/api/images(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
     }
   ],
   "onMatchHeaders": [],
@@ -159,6 +169,14 @@
         "nxtPslug": "nxtPslug"
       },
       "namedRegex": "^/stories/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/tags/[slug]",
+      "regex": "^/tags/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/tags/(?<nxtPslug>[^/]+?)(?:/)?$"
     },
     {
       "page": "/videos/[slug]",
@@ -381,6 +399,12 @@
       "namedRegex": "^/favicon\\.ico(?:/)?$"
     },
     {
+      "page": "/feed.xml",
+      "regex": "^/feed\\.xml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feed\\.xml(?:/)?$"
+    },
+    {
       "page": "/image-sitemap.xml",
       "regex": "^/image\\-sitemap\\.xml(?:/)?$",
       "routeKeys": {},
@@ -439,6 +463,12 @@
       "regex": "^/stories(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/stories(?:/)?$"
+    },
+    {
+      "page": "/tags",
+      "regex": "^/tags(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/tags(?:/)?$"
     },
     {
       "page": "/top",

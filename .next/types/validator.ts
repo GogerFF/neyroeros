@@ -263,6 +263,24 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/tags/[slug]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/tags/[slug]">> = Specific
+  const handler = {} as typeof import("../../app/tags/[slug]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/tags/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/tags">> = Specific
+  const handler = {} as typeof import("../../app/tags/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/top/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/top">> = Specific
@@ -546,6 +564,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/videos/manage">> = Specific
   const handler = {} as typeof import("../../app/api/videos/manage/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/feed.xml/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/feed.xml">> = Specific
+  const handler = {} as typeof import("../../app/feed.xml/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
