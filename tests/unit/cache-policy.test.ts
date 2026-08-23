@@ -79,9 +79,17 @@ describe("age gate page", () => {
 
   it("sets long-lived age cookie on confirm and does not render site chrome", () => {
     expect(route).toContain("age_confirmed");
-    expect(route).toContain("maxAge: 31536000");
+    expect(route).toContain("Max-Age=31536000");
     expect(page).toContain("/api/age-confirm");
     expect(page).toContain("returnTo");
+  });
+
+  it("age-confirm returns meta-refresh page (proxy-safe, no Location rewriting)", () => {
+    expect(route).not.toContain("NextResponse.redirect");
+    expect(route).toContain("http-equiv=\"refresh\"");
+    expect(route).toContain("x-forwarded-host");
+    // relative fallback when no proxy headers are present
+    expect(route).toContain("href = origin ? `${origin}${safeTarget}` : safeTarget");
   });
 
   it("layout no longer ships the client-side overlay gate", () => {
