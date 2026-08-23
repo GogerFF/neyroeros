@@ -33,6 +33,14 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.watch; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://mc.yandex.ru https://mc.yandex.watch; connect-src 'self' https://mc.yandex.ru https://mc.yandex.watch; media-src 'self' blob:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'"
         }
       ],
       "regex": "^(?:/(.*))(?:/)?$"
@@ -231,6 +239,12 @@
       "namedRegex": "^/admin/videos(?:/)?$"
     },
     {
+      "page": "/age-gate",
+      "regex": "^/age\\-gate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/age\\-gate(?:/)?$"
+    },
+    {
       "page": "/api/account/profile",
       "regex": "^/api/account/profile(?:/)?$",
       "routeKeys": {},
@@ -259,6 +273,12 @@
       "regex": "^/api/admin/videos/moderate(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/admin/videos/moderate(?:/)?$"
+    },
+    {
+      "page": "/api/age-confirm",
+      "regex": "^/api/age\\-confirm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/age\\-confirm(?:/)?$"
     },
     {
       "page": "/api/ai/suggest",
@@ -345,6 +365,12 @@
       "namedRegex": "^/api/videos/manage(?:/)?$"
     },
     {
+      "page": "/apple-icon.png",
+      "regex": "^/apple\\-icon\\.png(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/apple\\-icon\\.png(?:/)?$"
+    },
+    {
       "page": "/categories",
       "regex": "^/categories(?:/)?$",
       "routeKeys": {},
@@ -403,6 +429,12 @@
       "regex": "^/feed\\.xml(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/feed\\.xml(?:/)?$"
+    },
+    {
+      "page": "/icon.png",
+      "regex": "^/icon\\.png(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/icon\\.png(?:/)?$"
     },
     {
       "page": "/image-sitemap.xml",
@@ -469,6 +501,12 @@
       "regex": "^/tags(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/tags(?:/)?$"
+    },
+    {
+      "page": "/takedown",
+      "regex": "^/takedown(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/takedown(?:/)?$"
     },
     {
       "page": "/top",

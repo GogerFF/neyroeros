@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { Cormorant } from "next/font/google";
 import "./globals.css";
 import "./hero-video.css";
 import { Header } from "@/components/header";
-import { AgeGate } from "@/components/age-gate";
 import { getLocale, getMessages } from "@/lib/i18n-server";
 import { YandexMetrika } from "@/components/yandex-metrika";
 import { webSiteSchema } from "@/lib/seo";
 
+const displayFont = Cormorant({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-display",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://neyroeros.com"),
-  title: { default: "Neyroeros", template: "%s · Neyroeros" },
-  description: "Кураторская галерея AI-искусства для взрослых: работы, категории и рассказы. Только 18+.",
+  title: { default: "Neyroeros — AI-искусство 18+ для взрослых: галерея, видео, истории", template: "%s · Neyroeros" },
+  description: "Кураторская галерея AI-искусства 18+: нейро-эротика, цифровые работы, AI-видео и рассказы. Ручная модерация, только взрослые.",
+  keywords: ["AI art", "AI-искусство", "нейроэротика", "AI 18+", "AI видео", "цифровая эротика", "AI art gallery", "нейросеть искусство"],
   alternates: { canonical: "/", types: { "application/rss+xml": "https://neyroeros.com/feed.xml" } },
   openGraph: {
     siteName: "Neyroeros",
@@ -27,19 +35,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const [accepted, locale, m] = await Promise.all([
-    (await cookies()).get("age_confirmed")?.value === "1",
-    getLocale(),
-    getMessages(),
-  ]);
-  return <html lang={locale === "zh" ? "zh-CN" : locale}>
-    <head><meta name="rating" content="adult"/></head>
+  const [locale, m] = await Promise.all([getLocale(), getMessages()]);
+  return <html lang={locale === "zh" ? "zh-CN" : locale} className={displayFont.variable}>
+    <head><meta name="rating" content="adult"/><meta name="RATING" content="RTA-5042-1996-1400-1577-RTA"/></head>
     <body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}/>
     <YandexMetrika/>
     <Header/>
     <main>{children}</main>
-    <footer><b>NEYROEROS</b><p>{m.footer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>{m.footerRules}</Link> · <Link href="/about" style={{ color: "inherit" }}>{m.footerAbout}</Link></small></footer>
-    {!accepted && <AgeGate m={m}/>}
+    <footer><b>NEYROEROS</b><p>{m.footer}</p><p className="footer-disclaimer">{m.footerDisclaimer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>{m.footerRules}</Link> · <Link href="/takedown" style={{ color: "inherit" }}>{m.footerTakedown}</Link> · <Link href="/about" style={{ color: "inherit" }}>{m.footerAbout}</Link></small></footer>
   </body></html>;
 }

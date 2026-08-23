@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/artwork/[slug]">)
   const a = await get(slug);
   if (!a) return {};
   const x = await localizeArtwork(a, await getLocale());
-  const imageUrl = absoluteUrl(`/api/images/preview/${a.id}`);
+  const imageUrl = absoluteUrl(`/api/images/og/${a.id}`);
   return {
     title: x.title,
     description: x.description?.slice(0, 155) ?? `AI art: ${x.title}`,
@@ -34,14 +34,14 @@ export async function generateMetadata({ params }: PageProps<"/artwork/[slug]">)
       description: x.description?.slice(0, 200) ?? undefined,
       type: "article",
       url: absoluteUrl(`/artwork/${a.slug}`),
-      images: [{ url: imageUrl, width: a.asset?.width ?? 1200, height: a.asset?.height ?? 630, alt: x.title }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: x.title }],
       locale: "ru_RU",
     },
     twitter: {
       card: "summary_large_image",
       title: x.title,
       description: x.description?.slice(0, 200) ?? undefined,
-      images: [{ url: imageUrl, width: a.asset?.width ?? 1200, height: a.asset?.height ?? 630, alt: x.title }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: x.title }],
     },
   };
 }
