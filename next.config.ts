@@ -8,6 +8,7 @@ const CSP=[
   "img-src 'self' data: blob: https://mc.yandex.ru https://mc.yandex.watch",
   "connect-src 'self' https://mc.yandex.ru https://mc.yandex.watch",
   "media-src 'self' blob:",
+  "form-action 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",

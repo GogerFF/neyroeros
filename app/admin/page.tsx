@@ -12,14 +12,16 @@ const text = {
   zh: { eye: "策展人面板", title: "审核", decision: "等待决定", queue: "队列中", published: "已发布", authors: "艺术家", author: "艺术家", reason: "评论或拒绝原因", approve: "批准并发布", reject: "拒绝", empty: "审核队列为空。" },
 };
 
-export default async function Admin() {
+export default async function Admin({ searchParams }: PageProps<"/admin">) {
   await requireAdmin();
-  const [pending, users, published, queue, locale] = await Promise.all([
+  const sp = await searchParams;
+  const [pending, users, published, queue, locale, categories] = await Promise.all([
     db.artwork.findMany({ where: { status: "PENDING" }, include: { asset: true, author: true }, orderBy: { submittedAt: "asc" } }),
     db.user.count(),
     db.artwork.count({ where: { status: "PUBLISHED" } }),
     db.publicationQueueItem.count({ where: { status: "PENDING" } }),
     getLocale(),
+    db.category.findMany({ where: { isActive: true }, orderBy: { name: "asc" } }),
   ]);
   const m = text[locale as keyof typeof text] ?? text.ru;
 
@@ -33,6 +35,19 @@ export default async function Admin() {
       <label>Название<input name="name" required minLength={2} maxLength={60} placeholder="Например: Cyber Dreams"/></label>
       <label>Описание<input name="description" maxLength={240} placeholder="Короткое описание для каталога"/></label>
       <button>Добавить категорию</button>
+    </form>
+
+    {sp.videoUploaded === "1" && <div className="empty admin-notice">Видео опубликовано в выбранной категории.</div>}
+    {sp.videoError && <div className="empty admin-error">Не удалось загрузить видео: {sp.reason ? decodeURIComponent(String(sp.reason)) : sp.videoError === "too-large" ? "размер превышает 50 МБ" : "проверьте поля и формат файла"}.</div>}
+    <form action="/api/admin/category-video" method="post" encType="multipart/form-data" className="panel category-admin-form">
+      <h2>Прикрепить видео к категории</h2>
+      <p>Видео публикуется сразу. MP4 или WebM, не более 50 МБ.</p>
+      <label>Категория<select name="categoryId" required defaultValue=""><option value="" disabled>Выберите категорию</option>{categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
+      <label>Название<input name="title" required minLength={2} maxLength={100}/></label>
+      <label>Описание<textarea name="description" required minLength={2} maxLength={2000}/></label>
+      <label>Длительность, секунд<input name="durationSec" type="number" required min={1} max={3600}/></label>
+      <label className="drop">Видео до 50 МБ<input name="file" type="file" accept="video/mp4,video/webm" required/></label>
+      <button>Загрузить и опубликовать</button>
     </form>
 
     <div className="stats">
