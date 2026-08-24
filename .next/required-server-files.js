@@ -213,7 +213,7 @@ self.__SERVER_FILES_MANIFEST={
       "globalNotFound": false,
       "browserDebugInfoInTerminal": "warn",
       "lockDistDir": true,
-      "proxyClientMaxBodySize": 10485760,
+      "proxyClientMaxBodySize": 67108864,
       "hideLogsAfterAbort": false,
       "mcpServer": true,
       "turbopackFileSystemCacheForDev": true,

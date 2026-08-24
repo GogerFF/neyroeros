@@ -15,8 +15,8 @@ const CSP=[
 ].join("; ");
 
 const nextConfig:NextConfig={
-  experimental:{cpus:1,serverActions:{bodySizeLimit:"64mb"}},
-  // Route Handler body limit — required for video upload via POST
+  experimental:{cpus:1,serverActions:{bodySizeLimit:"64mb"},proxyClientMaxBodySize:"64mb"},
+  // Route Handler uploads: the app accepts videos up to 50 MiB.
   serverExternalPackages:[],
   async headers(){
     return[
@@ -35,7 +35,7 @@ const nextConfig:NextConfig={
       ]},
     ];
   },
-  // Allow large file uploads through Route Handlers (max 60 MB)
+  // Allow large file uploads through Route Handlers (max 64 MB)
   httpAgentOptions:{keepAlive:true},
 };
 export default nextConfig;
