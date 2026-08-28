@@ -58,6 +58,7 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
     </div>
 
     <div className="list">
+      {pending.length > 0 && <form action="/api/admin/moderate" method="post" className="bulk-actions"><input type="hidden" name="id" value="all"/><button name="decision" value="approve">Одобрить всё ({pending.length})</button></form>}
       {pending.map((a) => <article className="review" key={a.id}>
         <Link href={`/artwork/${a.slug}`}><img src={`/api/images/preview/${a.id}`} alt={a.title}/></Link>
         <div>
