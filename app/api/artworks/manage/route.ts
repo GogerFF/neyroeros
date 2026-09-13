@@ -2,13 +2,21 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/guards";
 import { deleteArtwork, submitArtwork, updateArtwork } from "@/lib/services/artwork-service";
+import { db } from "@/lib/db";
 
 export async function POST(request: Request) {
   const user = await requireUser();
   const form = await request.formData();
   const id = String(form.get("id") || "");
   const op = String(form.get("op") || "");
-  if (!id || !["submit", "update", "delete"].includes(op)) redirect("/dashboard?error=bad-request");
+  if (!id || !["submit", "submit-all", "update", "delete"].includes(op)) redirect("/dashboard?error=bad-request");
+
+  if (op === "submit-all") {
+    const drafts = await db.artwork.findMany({ where: { authorId: user.id, status: { in: ["DRAFT", "REJECTED"] } }, select: { id: true } });
+    for (const artwork of drafts) await submitArtwork(user.id, artwork.id);
+    revalidatePath("/"); revalidatePath("/dashboard"); revalidatePath("/admin");
+    redirect("/dashboard?submitted=all");
+  }
 
   if (op === "submit") {
     await submitArtwork(user.id, id);
