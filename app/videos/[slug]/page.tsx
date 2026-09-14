@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { getLocale } from "@/lib/i18n-server";
 import { categoryLabel } from "@/lib/i18n";
 import { VideoViewTracker } from "@/components/video-view-tracker";
+import { SubmitButton } from "@/components/submit-button";
 import { absoluteUrl, videoSchema } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -54,10 +55,10 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
     <aside>
       <span className="eyebrow">{video.category ? categoryLabel(video.category.slug, locale, video.category).name : "AI видео"}</span>
       <h1>{video.title}</h1><p className="lead">{video.description}</p>
-      <div className="social-row">{session?.user ? <form action="/api/videos/like" method="post"><input type="hidden" name="videoId" value={video.id}/><input type="hidden" name="slug" value={video.slug}/><button className={`like-button ${liked ? "liked" : ""}`}><Heart size={18} fill={liked ? "currentColor" : "none"}/>{likes}</button></form> : <Link className="like-button" href="/login"><Heart size={18}/>{likes}</Link>}<div className="view-count"><Eye size={17}/>{video.viewCount}</div></div>
+      <div className="social-row">{session?.user ? <form action="/api/videos/like" method="post"><input type="hidden" name="videoId" value={video.id}/><input type="hidden" name="slug" value={video.slug}/><SubmitButton className={`like-button ${liked ? "liked" : ""}`}>{likes}</SubmitButton></form> : <Link className="like-button" href="/login"><Heart size={18}/>{likes}</Link>}<div className="view-count"><Eye size={17}/>{video.viewCount}</div></div>
       <div className="author"><b>{video.author.displayName || "Анонимный автор"}</b><span>{video.durationSec} секунд · опубликовано {new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale).format(video.publishedAt!)}</span></div>
       <section className="comments"><h2>Комментарии <span>{video.comments.length}</span></h2>
-        {session?.user ? <form action="/api/videos/comment" method="post" className="comment-form"><input type="hidden" name="videoId" value={video.id}/><input type="hidden" name="slug" value={video.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><button>Отправить</button></form> : <p className="comment-login"><Link href="/login">Войдите</Link>, чтобы поставить лайк или оставить комментарий.</p>}
+        {session?.user ? <form action="/api/videos/comment" method="post" className="comment-form"><input type="hidden" name="videoId" value={video.id}/><input type="hidden" name="slug" value={video.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><SubmitButton pendingLabel="Отправка…">Отправить</SubmitButton></form> : <p className="comment-login"><Link href="/login">Войдите</Link>, чтобы поставить лайк или оставить комментарий.</p>}
         <div className="comment-list">{video.comments.map(c=><article key={c.id} className="comment"><div className="comment-avatar">{c.author.avatar ? <img src={`/api/avatars/${c.authorId}?v=${c.author.avatar.updatedAt.getTime()}`} alt="" loading="lazy" width={38} height={38}/> : (c.author.displayName || c.author.email).slice(0,1).toUpperCase()}</div><div><b>{c.author.displayName || c.author.email}</b><time>{new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale,{dateStyle:"medium"}).format(c.createdAt)}</time><p>{c.content}</p></div></article>)}{!video.comments.length&&<p className="no-comments">Комментариев пока нет. Будьте первым.</p>}</div>
       </section>
     </aside>

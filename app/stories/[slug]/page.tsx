@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { absoluteUrl, storySchema } from "@/lib/seo";
+import { SubmitButton } from "@/components/submit-button";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,7 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
     <section className="comments">
       <h2>Комментарии <span>{comments.length}</span></h2>
       {session?.user
-        ? <form action="/api/stories/comment" method="post" className="comment-form"><input type="hidden" name="storyId" value={story.id}/><input type="hidden" name="slug" value={story.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><button>Отправить</button></form>
+        ? <form action="/api/stories/comment" method="post" className="comment-form"><input type="hidden" name="storyId" value={story.id}/><input type="hidden" name="slug" value={story.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><SubmitButton pendingLabel="Отправка…">Отправить</SubmitButton></form>
         : <p className="comment-login"><Link href="/login">Войдите</Link>, чтобы поставить лайк или оставить комментарий.</p>}
       <div className="comment-list">
         {comments.map((c) => <article key={c.id} className="comment"><div className="comment-avatar">{c.author.avatar ? <img src={`/api/avatars/${c.authorId}?v=${c.author.avatar.updatedAt.getTime()}`} alt="" loading="lazy" width={38} height={38}/> : (c.author.displayName || c.author.email).slice(0, 1).toUpperCase()}</div><div><b>{c.author.displayName || c.author.email}</b><time>{new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium" }).format(c.createdAt)}</time><p>{c.content}</p></div></article>)}

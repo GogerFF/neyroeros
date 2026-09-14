@@ -14,4 +14,4 @@ export async function localizeArtwork<T extends {id:string;title:string;descript
   const translated=await ensureArtworkTranslation({...artwork,sourceLocale:normalizeLocale(artwork.sourceLocale)},locale,store,translationProviderFromEnv());
   return {...artwork,...translated};
 }
-export async function localizeArtworks<T extends {id:string;title:string;description:string|null;sourceLocale?:string}>(items:T[],locale:Locale){return Promise.all(items.map(x=>localizeArtwork(x,locale)))}
+export async function localizeArtworks<T extends {id:string;title:string;description:string|null;sourceLocale?:string;_count?:{likes:number}}>(items:T[],locale:Locale){return Promise.all(items.map(x=>localizeArtwork(x,locale).then(r=>({...r,likeCount:x._count?.likes}))))}

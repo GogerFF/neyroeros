@@ -10,6 +10,7 @@ import { ArtworkNavigator } from "@/components/artwork-navigator";
 import { ShareButtons } from "@/components/share-buttons";
 import { createCommentAction, toggleLikeAction } from "@/app/actions";
 import { ArtworkViewTracker } from "@/components/artwork-view-tracker";
+import { SubmitButton } from "@/components/submit-button";
 import { absoluteUrl, artworkSchema, breadcrumbSchema } from "@/lib/seo";
 
 async function get(slug: string) {
@@ -106,6 +107,9 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
   return <section className="art-detail">
     <ArtworkViewTracker artworkId={raw.id}/>
     <ArtworkNavigator current={a.slug} items={siblings} categorySlug={categorySlug}/>
+    <nav className="breadcrumbs" aria-label="Хлебные крошки">
+      <Link href="/">Главная</Link><span>/</span><Link href="/categories">Категории</Link>{a.category && <><span>/</span><Link href={`/categories/${a.category.slug}`}>{categoryLabel(a.category.slug, locale, a.category).name}</Link></>}<span>/</span><em>{a.title}</em>
+    </nav>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([...schema, { "@context": "https://schema.org", "@type": "WebPage", url: canonical, primaryImageOfPage: { "@type": "ImageObject", url: imageUrl, width: raw.asset?.width, height: raw.asset?.height } }]) }}/>
     <div className="art-image">
       <figure style={{ margin: 0 }}>
@@ -120,7 +124,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
       <p className="lead">{a.description}</p>
       <div className="social-row">
         {session?.user
-          ? <form action={toggleLikeAction}><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><button className={`like-button ${liked ? "liked" : ""}`}><Heart size={18} fill={liked ? "currentColor" : "none"}/>{likeCount}</button></form>
+          ? <form action={toggleLikeAction}><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><SubmitButton className={`like-button ${liked ? "liked" : ""}`}>{likeCount}</SubmitButton></form>
           : <Link className="like-button" href="/login"><Heart size={18}/>{likeCount}</Link>}
         <div className="view-count" title="Уникальные просмотры"><Eye size={17}/>{raw.viewCount}</div>
         <ShareButtons url={canonical} title={a.title} image={imageUrl}/>
@@ -131,7 +135,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
       <section className="comments">
         <h2>Комментарии <span>{comments.length}</span></h2>
         {session?.user
-          ? <form action={createCommentAction} className="comment-form"><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><button>Отправить</button></form>
+          ? <form action={createCommentAction} className="comment-form"><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><textarea name="content" required maxLength={1000} placeholder="Напишите комментарий…"/><SubmitButton pendingLabel="Отправка…">Отправить</SubmitButton></form>
           : <p className="comment-login"><Link href="/login">Войдите</Link>, чтобы поставить лайк или оставить комментарий.</p>}
         <div className="comment-list">
           {comments.map((c) => <article key={c.id} className="comment"><div className="comment-avatar">{c.author.avatar ? <img src={`/api/avatars/${c.authorId}?v=${c.author.avatar.updatedAt.getTime()}`} alt="" loading="lazy" width={38} height={38}/> : (c.author.displayName || c.author.email).slice(0, 1).toUpperCase()}</div><div><b>{c.author.displayName || c.author.email}</b><time>{new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale, { dateStyle: "medium" }).format(c.createdAt)}</time><p>{c.content}</p></div></article>)}

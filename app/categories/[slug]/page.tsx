@@ -32,7 +32,7 @@ export default async function Category({ params, searchParams }: PageProps<"/cat
     db.category.findUnique({
       where: { slug },
       include: {
-        artworks: { where: { status: "PUBLISHED", deletedAt: null }, include: { asset: true, author: true, category: true }, orderBy: { publishedAt: "desc" }, take: PAGE_SIZE, skip: (page - 1) * PAGE_SIZE },
+        artworks: { where: { status: "PUBLISHED", deletedAt: null }, include: { asset: true, author: true, category: true, _count: { select: { likes: true } } }, orderBy: { publishedAt: "desc" }, take: PAGE_SIZE, skip: (page - 1) * PAGE_SIZE },
         videos: { where: { status: "PUBLISHED", deletedAt: null }, orderBy: { publishedAt: "desc" } },
         _count: { select: { artworks: { where: { status: "PUBLISHED", deletedAt: null } } } },
       },

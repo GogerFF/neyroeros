@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const [raw, activeVideos, locale, m] = await Promise.all([
-    db.artwork.findMany({ where: { status: "PUBLISHED", deletedAt: null, publishedAt: { lte: new Date() } }, include: { asset: true, author: true, category: true }, orderBy: { publishedAt: "desc" }, take: 36 }),
+    db.artwork.findMany({ where: { status: "PUBLISHED", deletedAt: null, publishedAt: { lte: new Date() } }, include: { asset: true, author: true, category: true, _count: { select: { likes: true } } }, orderBy: { publishedAt: "desc" }, take: 36 }),
     db.heroVideo.findMany({ where: { status: "ACTIVE" }, select: { id: true, title: true, durationSec: true, webmKey: true }, orderBy: { sortOrder: "asc" }, take: 12 }),
     getLocale(), getMessages(),
   ]);
