@@ -45,6 +45,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <Header/>
     <main>{children}</main>
     <ScrollTopButton/>
-    <footer><b>NEYROEROS</b><p>{m.footer}</p><p className="footer-disclaimer">{m.footerDisclaimer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>{m.footerRules}</Link> · <Link href="/takedown" style={{ color: "inherit" }}>{m.footerTakedown}</Link> · <Link href="/about" style={{ color: "inherit" }}>{m.footerAbout}</Link></small></footer>
+    <footer><b>NEYROEROS</b><p>{m.footer}</p><p className="footer-disclaimer">{m.footerDisclaimer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>{m.footerRules}</Link> · <Link href="/takedown" style={{ color: "inherit" }}>{m.footerTakedown}</Link> · <Link href="/about" style={{ color: "inherit" }}>{m.footerAbout}</Link> · <Link href="/donate" style={{ color: "var(--accent)" }}>{m.donate}</Link></small></footer>
   </body></html>;
 }

@@ -19,9 +19,10 @@ export async function Header(){
     { href: "/stories", name: m.stories },
     ...(isAdmin ? [{ href: "/admin", name: m.moderation }] : []),
   ];
-  const drawerAuth = s
-    ? [{ href: "/dashboard", name: m.studio }]
-    : [{ href: "/login", name: m.login }];
+  const drawerAuth = [
+    { href: "/donate", name: m.donate },
+    ...(s ? [{ href: "/dashboard", name: m.studio }] : [{ href: "/login", name: m.login }]),
+  ];
   return <header><Link className="brand" href="/"><b>NEYROEROS</b></Link>
   <nav>
     <Link href="/categories">{m.categories}</Link>
