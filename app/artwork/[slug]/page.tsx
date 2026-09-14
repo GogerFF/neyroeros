@@ -62,6 +62,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
     ...(categorySlug ? { category: { slug: categorySlug } } : {}),
   };
   const relatedQuery = raw.categoryId ? { categoryId: raw.categoryId } : {};
+  const tagIds = raw.tags.map(t => t.tagId);
 
   const [a, siblings, likeCount, liked, comments, related] = await Promise.all([
     localizeArtwork(raw, locale),
@@ -79,7 +80,10 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
       orderBy: { createdAt: "asc" },
     }),
     db.artwork.findMany({
-      where: { status: "PUBLISHED", deletedAt: null, id: { not: raw.id }, ...relatedQuery },
+      where: {
+        status: "PUBLISHED", deletedAt: null, id: { not: raw.id },
+        ...(tagIds.length ? { tags: { some: { tagId: { in: tagIds } } } } : relatedQuery),
+      },
       select: { id: true, slug: true, title: true, asset: true, category: true, author: true },
       orderBy: { publishedAt: "desc" },
       take: 6,

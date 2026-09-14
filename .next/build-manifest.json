@@ -4,8 +4,8 @@
   ],
   "devFiles": [],
   "lowPriorityFiles": [
-    "static/v05YYSemhUPyhWGtPDbFr/_buildManifest.js",
-    "static/v05YYSemhUPyhWGtPDbFr/_ssgManifest.js"
+    "static/-wp-kAbHLO0ayVGeHwZqC/_buildManifest.js",
+    "static/-wp-kAbHLO0ayVGeHwZqC/_ssgManifest.js"
   ],
   "rootMainFiles": [
     "static/chunks/webpack-ddb9be6b955db591.js",

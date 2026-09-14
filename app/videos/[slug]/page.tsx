@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: video.title,
     description: video.description?.slice(0, 155) ?? `AI video: ${video.title}`,
     alternates: { canonical: `/videos/${video.slug}` },
-    openGraph: { title: video.title, description: video.description?.slice(0, 200) ?? undefined, type: "video.other", url: absoluteUrl(`/videos/${video.slug}`), images: [{ url: poster, alt: video.title }], locale: "ru_RU" },
-    twitter: { card: "summary_large_image", title: video.title, description: video.description?.slice(0, 200) ?? undefined, images: [{ url: poster, alt: video.title }] },
+    openGraph: { title: video.title, description: video.description?.slice(0, 200) ?? undefined, type: "video.other", url: absoluteUrl(`/videos/${video.slug}`), images: [{ url: poster, width: 1200, height: 630, alt: video.title }], locale: "ru_RU" },
+    twitter: { card: "summary_large_image", title: video.title, description: video.description?.slice(0, 200) ?? undefined, images: [{ url: poster, width: 1200, height: 630, alt: video.title }] },
   };
 }
 

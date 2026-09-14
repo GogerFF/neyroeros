@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: story.description?.slice(0, 200) ?? undefined,
       type: "article",
       url: absoluteUrl(`/stories/${story.slug}`),
-      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: story.title }] : undefined,
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: story.title }] : [{ url: absoluteUrl("/og-default.webp"), width: 1200, height: 630, alt: story.title }],
       locale: "ru_RU",
     },
     twitter: {
       card: "summary_large_image",
       title: story.title,
       description: story.description?.slice(0, 200) ?? undefined,
-      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: story.title }] : undefined,
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: story.title }] : [{ url: absoluteUrl("/og-default.webp"), width: 1200, height: 630, alt: story.title }],
     },
   };
 }

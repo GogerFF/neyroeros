@@ -7,6 +7,7 @@ import "./hero-video.css";
 import { Header } from "@/components/header";
 import { getLocale, getMessages } from "@/lib/i18n-server";
 import { YandexMetrika } from "@/components/yandex-metrika";
+import { ScrollTopButton } from "@/components/scroll-top";
 import { webSiteSchema } from "@/lib/seo";
 
 const displayFont = Cormorant({
@@ -43,6 +44,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <YandexMetrika/>
     <Header/>
     <main>{children}</main>
+    <ScrollTopButton/>
     <footer><b>NEYROEROS</b><p>{m.footer}</p><p className="footer-disclaimer">{m.footerDisclaimer}</p><small>© 2026 · <Link href="/rules" style={{ color: "inherit" }}>{m.footerRules}</Link> · <Link href="/takedown" style={{ color: "inherit" }}>{m.footerTakedown}</Link> · <Link href="/about" style={{ color: "inherit" }}>{m.footerAbout}</Link></small></footer>
   </body></html>;
 }
