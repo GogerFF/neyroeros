@@ -53,3 +53,6 @@ next-env.d.ts
 /minimax-h3-direct/__pycache__/
 /minimax-h3-direct/generated/
 /minimax-h3-direct/saved_prompts.json
+
+# Antigravity audit artifacts (local only)
+agy-audit/
