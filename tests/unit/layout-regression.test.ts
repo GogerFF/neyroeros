@@ -40,3 +40,25 @@ describe("mobile drawer alignment", () => {
     expect(css).toContain("header{height:60px");
   });
 });
+
+describe("long titles must not widen the page", () => {
+  // Titles run to 100 characters and contain words like «фотореалистичный». Without
+  // min-width:0 the aside column's min-content width set the grid track, so the page
+  // scrolled sideways on a 1200px screen (reported from production).
+  const asideRules = css.match(/\.art-detail aside\{[^}]*\}/g) ?? [];
+  const h1Rules = css.match(/\.art-detail h1\{[^}]*\}/g) ?? [];
+
+  it("lets the aside column shrink below its content width", () => {
+    expect(asideRules.some((rule) => rule.includes("min-width:0"))).toBe(true);
+  });
+
+  it("lets a long word break inside the heading", () => {
+    expect(h1Rules.some((rule) => rule.includes("overflow-wrap:anywhere"))).toBe(true);
+  });
+
+  it("does not set the detail heading at display scale any more", () => {
+    const size = h1Rules.join(" ").match(/clamp\(([\d.]+)rem,[\d.]+vw,([\d.]+)rem\)/);
+    expect(size).not.toBeNull();
+    expect(Number(size![2])).toBeLessThanOrEqual(3.6);
+  });
+});
