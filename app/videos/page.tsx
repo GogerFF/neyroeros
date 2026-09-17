@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { getLocale } from "@/lib/i18n-server";
 import { categoryLabel } from "@/lib/i18n";
 
+import type { Metadata } from "next";
+export const metadata: Metadata = { title: "AI-видео", description: "Видео, созданные авторами сообщества Neyroeros. Публикуются только после ручной модерации.", alternates: { canonical: "/videos" } };
 export const dynamic = "force-dynamic";
 export default async function Videos() {
   const [videos, locale] = await Promise.all([db.video.findMany({ where: { status: "PUBLISHED", deletedAt: null }, include: { author: true, category: true }, orderBy: { publishedAt: "desc" }, take: 48 }), getLocale()]);

@@ -113,7 +113,7 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([...schema, { "@context": "https://schema.org", "@type": "WebPage", url: canonical, primaryImageOfPage: { "@type": "ImageObject", url: imageUrl, width: raw.asset?.width, height: raw.asset?.height } }]) }}/>
     <div className="art-image">
       <figure style={{ margin: 0 }}>
-        <img src={`/api/images/preview/${a.id}`} alt={imageAlt} width={raw.asset?.width} height={raw.asset?.height} style={{ maxWidth: "100%", height: "auto" }}/>
+        <img src={`/api/images/preview/${a.id}`} alt={imageAlt} fetchPriority="high" width={raw.asset?.width} height={raw.asset?.height} style={{ maxWidth: "100%", height: "auto" }}/>
         <figcaption className="art-caption">{a.title} — {a.author.displayName || m.anonymous} · {a.category ? categoryLabel(a.category.slug, locale, a.category).name : m.aiArt}</figcaption>
       </figure>
       <div className="art-download"><a href={`/api/images/download/${a.id}`} className="button" download>Скачать с водяным знаком</a></div>

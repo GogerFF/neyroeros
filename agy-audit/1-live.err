@@ -1,0 +1,2 @@
+root agent idle; waiting for 2 background task(s) (bounded by --print-timeout)
+[agy] print timeout after 9m0s with turn in progress; returning partial output
