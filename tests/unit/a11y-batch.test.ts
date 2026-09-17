@@ -58,7 +58,12 @@ describe("failure and loading states", () => {
     expect(read("app/error.tsx")).toMatch(/error/);
   });
 
-  it("ships a loading boundary so navigation gives feedback", () => {
-    expect(existsSync("app/loading.tsx")).toBe(true);
+  it("no root loading boundary: it would turn every 404 into a soft 200", () => {
+    // This assertion used to require the opposite. A root loading boundary flushes
+    // the shell (status 200) before the page resolves, so /artwork/<unknown> and
+    // friends answered 200 with the not-found page. Measured on a production build;
+    // see tests/unit/soft-404.test.ts for the invariant and the intended way to
+    // reinstate a skeleton (a route group that excludes the detail pages).
+    expect(existsSync("app/loading.tsx")).toBe(false);
   });
 });
