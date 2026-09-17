@@ -128,6 +128,7 @@ model Artwork {
 
   @@index([status, publishedAt])
   @@index([authorId, createdAt])
+  @@index([categoryId, status, publishedAt])
 }
 
 model ArtworkTranslation {
@@ -214,6 +215,7 @@ model ArtworkTag {
   tag       Tag       @relation(fields: [tagId], references: [id])
 
   @@id([artworkId, tagId])
+  @@index([tagId])
 }
 
 model Category {
