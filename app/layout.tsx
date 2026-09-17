@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const [locale, m] = await Promise.all([getLocale(), getMessages()]);
   return <html lang={locale === "zh" ? "zh-CN" : locale} className={displayFont.variable}>
-    <head><meta name="rating" content="adult"/><meta name="RATING" content="RTA-5042-1996-1400-1577-RTA"/></head>
+    <head><meta name="RATING" content="RTA-5042-1996-1400-1577-RTA"/></head>
     <body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}/>
     <YandexMetrika/>

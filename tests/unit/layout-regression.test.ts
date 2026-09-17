@@ -19,6 +19,19 @@ describe("artwork detail grid layout", () => {
   });
 });
 
+describe("adult rating declaration", () => {
+  const layout = readFileSync("app/layout.tsx", "utf8");
+
+  it("declares the rating exactly once (metadata API, not also hardcoded in <head>)", () => {
+    // metadata.other.rating emits <meta name="rating" content="adult"/>
+    expect(layout).toContain('rating: "adult"');
+    // a second hardcoded copy produced two identical tags in production
+    expect(layout).not.toContain('<meta name="rating"');
+    // the RTA registration code is not part of the metadata API and must stay
+    expect(layout).toContain('name="RATING"');
+  });
+});
+
 describe("mobile drawer alignment", () => {
   it("starts below the compact mobile header", () => {
     const drawer = css.match(/\.mobile-drawer\{[^}]*\}/)?.[0] ?? "";
