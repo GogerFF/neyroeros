@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import Link from "next/link";
 import { Heart, Eye } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -12,7 +13,7 @@ import { absoluteUrl, videoSchema } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-async function getVideo(slug: string) {
+const getVideo = cache(async (slug: string) => {
   return db.video.findFirst({
     where: { slug, status: "PUBLISHED", deletedAt: null },
     include: {
@@ -21,7 +22,7 @@ async function getVideo(slug: string) {
       comments: { where: { deletedAt: null }, include: { author: { include: { avatar: true } } }, orderBy: { createdAt: "asc" } },
     },
   });
-}
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

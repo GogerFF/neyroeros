@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import Link from "next/link";
 import { Heart, Eye } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -13,12 +14,12 @@ import { ArtworkViewTracker } from "@/components/artwork-view-tracker";
 import { SubmitButton } from "@/components/submit-button";
 import { absoluteUrl, artworkSchema, breadcrumbSchema } from "@/lib/seo";
 
-async function get(slug: string) {
+const get = cache(async (slug: string) => {
   return db.artwork.findFirst({
     where: { slug, status: "PUBLISHED", deletedAt: null },
     include: { asset: true, author: true, category: true, tags: { include: { tag: true } } },
   });
-}
+});
 
 export async function generateMetadata({ params }: PageProps<"/artwork/[slug]">): Promise<Metadata> {
   const { slug } = await params;

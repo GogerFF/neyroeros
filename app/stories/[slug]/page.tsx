@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -9,12 +10,14 @@ import { SubmitButton } from "@/components/submit-button";
 
 export const dynamic = "force-dynamic";
 
+const getStory = cache(async (slug: string) => db.story.findFirst({
+  where: { slug, status: "PUBLISHED", deletedAt: null },
+  include: { author: true, illustrations: { orderBy: { sortOrder: "asc" } } },
+}));
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const story = await db.story.findFirst({
-    where: { slug, status: "PUBLISHED", deletedAt: null },
-    include: { illustrations: { take: 1, orderBy: { sortOrder: "asc" } }, author: true },
-  });
+  const story = await getStory(slug);
   if (!story) return {};
   const imageUrl = story.illustrations[0] ? absoluteUrl(`/api/stories/images/${story.illustrations[0].id}`) : undefined;
   return {
@@ -41,10 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function StoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const session = await auth();
-  const story = await db.story.findFirst({
-    where: { slug, status: "PUBLISHED", deletedAt: null },
-    include: { author: true, illustrations: { orderBy: { sortOrder: "asc" } } },
-  });
+  const story = await getStory(slug);
   if (!story) notFound();
 
   const [likeCount, liked, comments] = await Promise.all([

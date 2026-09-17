@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { ArtworkGrid } from "@/components/artwork-grid";
@@ -6,7 +7,7 @@ import { getLocale, getMessages, localizeArtworks } from "@/lib/i18n-server";
 
 export const dynamic = "force-dynamic";
 
-async function getAuthor(handle: string) {
+const getAuthor = cache(async (handle: string) => {
   return db.user.findUnique({
     where: { handle },
     select: {
@@ -19,7 +20,7 @@ async function getAuthor(handle: string) {
       },
     },
   });
-}
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
   const { handle } = await params;
