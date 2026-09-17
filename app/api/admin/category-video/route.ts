@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { requireTrustedOrigin } from "@/lib/request-origin";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guards";
 import { db } from "@/lib/db";
@@ -7,6 +8,8 @@ import { adminVideoSizeIsAllowed } from "@/lib/admin-video-input";
 import { storeAdminCategoryVideo } from "@/lib/storage/admin-category-video";
 
 export async function POST(request: Request) {
+  const originGuard = requireTrustedOrigin(request);
+  if (originGuard) return originGuard;
   const admin = await requireAdmin();
   let form: FormData;
   try {

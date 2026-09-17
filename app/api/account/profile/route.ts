@@ -1,10 +1,13 @@
 import { revalidatePath } from "next/cache";
+import { requireTrustedOrigin } from "@/lib/request-origin";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/guards";
 import { db } from "@/lib/db";
 import { profileSchema } from "@/lib/profile-input";
 
 export async function POST(request: Request) {
+  const originGuard = requireTrustedOrigin(request);
+  if (originGuard) return originGuard;
   const user = await requireUser();
   const form = await request.formData();
   const parsed = profileSchema.safeParse({ handle: String(form.get("handle") || ""), bio: String(form.get("bio") || "") });

@@ -3,12 +3,20 @@ import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { dayBucket } from "@/lib/artwork-view";
+import { enforceRateLimit } from "@/lib/rate-limit";
 
 const COOKIE = "neyroeros_video_viewer";
 const secret = process.env.AUTH_SECRET || "video-view-secret";
 
-export async function POST(_: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; const session = await auth(); const store = await cookies();
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const clientIp = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
+  try {
+    await enforceRateLimit("VIDEO_VIEW", clientIp, 120, 3600000);
+  } catch {
+    return new Response(null, { status: 429 });
+  }
+ const session = await auth(); const store = await cookies();
   let visitor = store.get(COOKIE)?.value; if (!visitor) { visitor = randomUUID(); store.set(COOKIE, visitor, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: 60 * 60 * 24 * 31, path: "/" }); }
   const video = await db.video.findFirst({ where: { id, status: "PUBLISHED", deletedAt: null }, select: { authorId: true } });
   if (!video || session?.user.id === video.authorId) return Response.json({ counted: false });

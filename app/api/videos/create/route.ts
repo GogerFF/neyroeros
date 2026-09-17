@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { requireTrustedOrigin } from "@/lib/request-origin";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/guards";
 import { enforceRateLimit } from "@/lib/rate-limit";
@@ -9,6 +10,8 @@ import { videoDurationIsAllowed } from "@/lib/video-input";
 import { storeUserVideo } from "@/lib/storage/video-storage";
 
 export async function POST(request: Request) {
+  const originGuard = requireTrustedOrigin(request);
+  if (originGuard) return originGuard;
   const user = await requireUser();
   await enforceRateLimit("VIDEO_UPLOAD", user.id, 5, 3600000);
   const form = await request.formData();

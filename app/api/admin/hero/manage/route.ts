@@ -1,9 +1,12 @@
 import { revalidatePath } from "next/cache";
+import { requireTrustedOrigin } from "@/lib/request-origin";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guards";
 import { db } from "@/lib/db";
 
 export async function POST(request: Request) {
+  const originGuard = requireTrustedOrigin(request);
+  if (originGuard) return originGuard;
   await requireAdmin();
   const form = await request.formData();
   const id = String(form.get("id") || "");

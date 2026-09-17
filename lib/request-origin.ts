@@ -33,3 +33,14 @@ export function isTrustedOrigin(headers: Headers, origin: string | null, interna
   }
   return false;
 }
+
+/**
+ * Guards a state-changing handler against cross-site form posts. Returns a 403
+ * Response when the browser Origin is neither the public origin (proxy headers)
+ * nor the origin this server sees directly, and null when the request is fine.
+ */
+export function requireTrustedOrigin(request: Request): Response | null {
+  const origin = request.headers.get("origin");
+  if (isTrustedOrigin(request.headers, origin, request.url)) return null;
+  return new Response(null, { status: 403 });
+}

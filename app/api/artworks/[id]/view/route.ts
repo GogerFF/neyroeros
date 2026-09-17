@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { dayBucket, shouldCountArtworkView } from "@/lib/artwork-view";
 import { isTrustedOrigin } from "@/lib/request-origin";
+import { enforceRateLimit } from "@/lib/rate-limit";
 
 const COOKIE = "ne_viewer";
 const ONE_YEAR = 60 * 60 * 24 * 365;
@@ -20,6 +21,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   }
 
   const { id } = await params;
+  const clientIp = (request.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
+  try {
+    await enforceRateLimit("ARTWORK_VIEW", clientIp, 120, 3600000);
+  } catch {
+    return new Response(null, { status: 429 });
+  }
   const [session, artwork] = await Promise.all([
     auth(),
     db.artwork.findFirst({ where: { id, status: "PUBLISHED", deletedAt: null }, select: { id: true, authorId: true } }),

@@ -1,10 +1,13 @@
 import { revalidatePath } from "next/cache";
+import { requireTrustedOrigin } from "@/lib/request-origin";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/guards";
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { createArtwork } from "@/lib/services/artwork-service";
 
 export async function POST(request: Request) {
+  const originGuard = requireTrustedOrigin(request);
+  if (originGuard) return originGuard;
   const user = await requireUser();
   await enforceRateLimit("UPLOAD", user.id, 10, 3600000);
 

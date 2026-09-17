@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { requireTrustedOrigin } from "@/lib/request-origin";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/guards";
 import { enforceRateLimit } from "@/lib/rate-limit";
@@ -6,6 +7,8 @@ import { db } from "@/lib/db";
 import { commentSchema } from "@/lib/social";
 
 export async function POST(request: Request) {
+  const originGuard = requireTrustedOrigin(request);
+  if (originGuard) return originGuard;
   const user = await requireUser();
   await enforceRateLimit("COMMENT", user.id, 12, 3600000);
 
