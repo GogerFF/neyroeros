@@ -1,4 +1,4 @@
-import type { Locale } from "@/lib/i18n";
+import { normalizeLocale, type Locale } from "@/lib/i18n";
 
 export type MetadataInput = { title: string; description: string | null; sourceLocale: Locale };
 export type TranslationInput = MetadataInput & { targetLocale: Locale };
@@ -7,6 +7,11 @@ export interface TranslationProvider { translate(input: TranslationInput): Promi
 export interface ArtworkTranslationStore {
   find(artworkId: string, locale: Locale): Promise<TranslatedMetadata | null>;
   save(artworkId: string, locale: Locale, value: TranslatedMetadata): Promise<TranslatedMetadata>;
+}
+
+/** Store that can resolve a whole page of artworks in one query. */
+export interface BatchTranslationStore {
+  findMany(artworkIds: string[], locale: Locale): Promise<Map<string, TranslatedMetadata>>;
 }
 
 const words: Record<Locale, Record<string, string>> = {
@@ -83,6 +88,36 @@ export function translationProviderFromEnv(): TranslationProvider {
   });
   if (process.env.TRANSLATION_PROVIDER === "local") return new DeterministicTranslationProvider();
   return new GoogleTranslationProvider();
+}
+
+/** True when the item's own text is not already in the requested language. */
+export function needsTranslation(item: { sourceLocale?: string }, targetLocale: Locale): boolean {
+  return normalizeLocale(item.sourceLocale) !== targetLocale;
+}
+
+/**
+ * Localizes a whole page of artworks with a single store query.
+ *
+ * Deliberately does NOT call the translation provider. A grid of 48 artworks in a
+ * locale mismatch used to fire up to two external HTTP requests per card *inside*
+ * the server render; here a miss simply falls back to the original text.
+ */
+export async function localizeManyTranslations<
+  T extends { id: string; title: string; description: string | null; sourceLocale?: string },
+>(
+  items: T[],
+  targetLocale: Locale,
+  store: BatchTranslationStore,
+): Promise<T[]> {
+  if (items.length === 0) return [];
+  const pending = items.filter((item) => needsTranslation(item, targetLocale));
+  if (pending.length === 0) return items;
+  const cached = await store.findMany(pending.map((item) => item.id), targetLocale);
+  if (cached.size === 0) return items;
+  return items.map((item) => {
+    const hit = cached.get(item.id);
+    return hit ? { ...item, ...hit } : item;
+  });
 }
 
 export async function ensureArtworkTranslation(
