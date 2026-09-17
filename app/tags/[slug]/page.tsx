@@ -5,13 +5,15 @@ import { db } from "@/lib/db";
 import { ArtworkGrid } from "@/components/artwork-grid";
 import { breadcrumbSchema, collectionSchema } from "@/lib/seo";
 import { getLocale, getMessages, localizeArtworks } from "@/lib/i18n-server";
+import { firstMatch, slugCandidates } from "@/lib/slug-param";
 
 export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ slug: string }> };
 
 async function getTag(slug: string) {
-  return db.tag.findUnique({ where: { slug }, include: { _count: { select: { artworks: true } } } });
+  return firstMatch(slugCandidates(slug), (candidate) =>
+    db.tag.findUnique({ where: { slug: candidate }, include: { _count: { select: { artworks: true } } } }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
