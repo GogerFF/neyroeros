@@ -2,6 +2,7 @@ import { createHmac, randomUUID } from "node:crypto";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { dayBucket, shouldCountArtworkView } from "@/lib/artwork-view";
+import { isTrustedOrigin } from "@/lib/request-origin";
 
 const COOKIE = "ne_viewer";
 const ONE_YEAR = 60 * 60 * 24 * 365;
@@ -12,9 +13,11 @@ function viewerHash(value: string) {
 }
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const origin = request.headers.get("origin");
-  const ownOrigin = new URL(request.url).origin;
-  if (origin && origin !== ownOrigin) return new Response(null, { status: 403 });
+  // Behind Passenger `request.url` is the internal listen address, so compare the
+  // browser Origin against the PROXY-reported public origin instead.
+  if (!isTrustedOrigin(request.headers, request.headers.get("origin"), request.url)) {
+    return new Response(null, { status: 403 });
+  }
 
   const { id } = await params;
   const [session, artwork] = await Promise.all([
