@@ -1,19 +1,26 @@
 /**
- * Cache + age-gate policy for anonymous visitors (pure functions, unit-tested).
+ * Cache + age-gate policy for page responses (pure functions, unit-tested).
  *
- * Pages stay SSR (locale lives in a cookie), so the cache layer is the CDN/
- * edge cache: anonymous GETs to cacheable pages get s-maxage + Vary: Cookie
- * (cookie presence is part of the cache key — signed-in responses never leak
- * into the shared pool), while signed-in users always get private, no-store.
+ * HTML is NEVER handed to an intermediary cache. The site is SSR with the locale
+ * in a cookie, so a shared cache would need Vary: Cookie to stay correct — and on
+ * the production host (LiteSpeed) that combination produced per-cookie-variant
+ * copies of one URL: visitors were served a stale "not found" render of a page
+ * that had already been published, and two requests carrying the same cookie could
+ * get different bodies. Publishing has to be visible at once, so every page
+ * response is no-store. Long-lived caching is left to /_next/static, whose file
+ * names carry a content hash and which the middleware's matcher skips entirely.
  */
 
-export const PAGE_CACHE_CONTROL = "public, s-maxage=600, stale-while-revalidate=86400";
-export const PRIVATE_CACHE_CONTROL = "private, no-cache, no-store, max-age=0, must-revalidate";
+export const NO_STORE = "private, no-cache, no-store, max-age=0, must-revalidate";
+
+/** The page policy; kept as a named export because callers and tests read it. */
+export const PAGE_CACHE_CONTROL = NO_STORE;
+export const PRIVATE_CACHE_CONTROL = NO_STORE;
 
 /** Cookie names that mark a request as personalized / session-bearing. */
 export const AUTH_COOKIE_NAMES = ["authjs.session-token", "__Secure-authjs.session-token", "__Host-authjs.session-token"];
 
-/** Path prefixes that must never be edge-cached or gated. */
+/** Path prefixes that are never age-gated and never get page cache headers. */
 const EXCLUDED_PREFIXES = [
   "/api",
   "/_next",
@@ -31,8 +38,9 @@ const EXCLUDED_PREFIXES = [
 
 export const CACHEABLE_EXTENSIONS = [".css", ".js", ".map", ".ico", ".png", ".jpg", ".jpeg", ".webp", ".svg", ".woff", ".woff2", ".txt", ".xml"];
 
-/** Which paths can be served from the shared anonymous cache. */
-export function isCacheablePath(pathname: string): boolean {
+/** True for server-rendered HTML pages: everything that is not an API route, a
+ *  static asset, an auth screen or one of the machine-readable endpoints. */
+export function isHtmlPagePath(pathname: string): boolean {
   if (EXCLUDED_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/") || pathname.startsWith(p))) {
     return false;
   }
@@ -57,8 +65,12 @@ export type EdgeRequestContext = {
   path: string;
 };
 
-/** Cache headers for an HTML page response. */
-export function pageCacheHeaders({ hasAuthCookie }: EdgeRequestContext): Record<string, string> {
-  if (hasAuthCookie) return { "Cache-Control": PRIVATE_CACHE_CONTROL, Vary: "Cookie" };
-  return { "Cache-Control": PAGE_CACHE_CONTROL, Vary: "Cookie" };
+/**
+ * Headers for an HTML page response — identical for anonymous and signed-in
+ * visitors on purpose: nothing may be stored, so there is no shared pool to leak
+ * into and no cookie-varying cache key that can go stale. No Vary: Cookie either;
+ * it only multiplies cache variants when nothing should be cached at all.
+ */
+export function pageCacheHeaders(_context: EdgeRequestContext): Record<string, string> {
+  return { "Cache-Control": NO_STORE };
 }

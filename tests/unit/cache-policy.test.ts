@@ -3,43 +3,65 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   CACHEABLE_EXTENSIONS,
-  isCacheablePath,
+  isHtmlPagePath,
   isVerifiedBot,
   pageCacheHeaders,
+  PAGE_CACHE_CONTROL,
   type EdgeRequestContext,
 } from "@/lib/cache-policy";
 
-describe("cache policy", () => {
+describe("page cache policy", () => {
   const anon = { hasAuthCookie: false, hasLocaleCookie: false, path: "/" };
   const anonWithLocale = { hasAuthCookie: false, hasLocaleCookie: true, path: "/" };
   const authed = { hasAuthCookie: true, hasLocaleCookie: true, path: "/" };
 
-  it("gives anonymous visitors CDN-cacheable headers with Vary: Cookie", () => {
+  it("never lets an intermediary store anonymous HTML", () => {
     const h = pageCacheHeaders(anon);
-    expect(h["Cache-Control"]).toContain("s-maxage=");
-    expect(h["Cache-Control"]).toContain("stale-while-revalidate");
-    expect(h["Vary"]).toContain("Cookie");
+    expect(h["Cache-Control"]).toContain("no-store");
+    expect(h["Cache-Control"]).not.toContain("s-maxage");
+    expect(h["Cache-Control"]).not.toContain("stale-while-revalidate");
+    expect(h["Cache-Control"]).not.toContain("public");
   });
 
-  it("anonymizes locale-only users too (cache key includes Cookie via Vary)", () => {
-    expect(pageCacheHeaders(anonWithLocale)["Cache-Control"]).toContain("s-maxage=");
+  it("does not vary the cache key by cookie (there is no shared cache to vary)", () => {
+    expect(pageCacheHeaders(anon)["Vary"]).toBeUndefined();
+    expect(pageCacheHeaders(authed)["Vary"]).toBeUndefined();
   });
 
-  it("never shares cache for signed-in users", () => task_no_shared_cache());
-function task_no_shared_cache() {
-  const h = pageCacheHeaders({ hasAuthCookie: true, hasLocaleCookie: true, path: "/" });
-  if (!h["Cache-Control"].includes("private") || !h["Cache-Control"].includes("no-store") || !h["Vary"].includes("Cookie")) {
-    throw new Error("signed-in responses must be private+no-store and Vary: Cookie");
-  }
-}
+  it("gives locale-only visitors the same no-store policy", () => {
+    expect(pageCacheHeaders(anonWithLocale)["Cache-Control"]).toBe(pageCacheHeaders(anon)["Cache-Control"]);
+  });
 
+  it("keeps signed-in responses private and unstorable", () => {
+    const h = pageCacheHeaders({ hasAuthCookie: true, hasLocaleCookie: true, path: "/" });
+    expect(h["Cache-Control"]).toContain("private");
+    expect(h["Cache-Control"]).toContain("no-store");
+  });
+
+  it("regression: the page policy must not invite shared caching again", () => {
+    // LiteSpeed on the production host turned public+s-maxage+Vary: Cookie into
+    // per-cookie-variant copies, so a published page kept serving a stale
+    // "not found" render. Publishing must be visible immediately.
+    for (const token of ["s-maxage", "stale-while-revalidate", "public"]) {
+      expect(PAGE_CACHE_CONTROL).not.toContain(token);
+    }
+    expect(PAGE_CACHE_CONTROL).toContain("no-store");
+  });
+});
+
+describe("path classification and age gate", () => {
   it("skips API, admin, dashboard and auth endpoints", () => {
     for (const path of ["/api/images/preview/x", "/admin", "/dashboard", "/login", "/register", "/_next/static/app/page.js"]) {
-      expect(isCacheablePath(path)).toBe(false);
+      expect(isHtmlPagePath(path)).toBe(false);
     }
     for (const path of ["/", "/top", "/artwork/nyu-v-lesoparke-cmskm07y", "/stories/slug-1a"]) {
-      expect(isCacheablePath(path)).toBe(true);
+      expect(isHtmlPagePath(path)).toBe(true);
     }
+  });
+
+  it("keeps static asset extensions out of the page policy", () => {
+    expect(CACHEABLE_EXTENSIONS).toContain(".js");
+    expect(isHtmlPagePath("/_next/static/css/app.css")).toBe(false);
   });
 
   it("recognizes major search/AI crawler UAs", () => {
@@ -61,9 +83,13 @@ function task_no_shared_cache() {
 describe("middleware wiring", () => {
   const src = readFileSync(resolve("middleware.ts"), "utf8");
 
-  it("applies page cache policy on cacheable paths", () => {
+  it("applies the page policy on HTML paths", () => {
     expect(src).toContain("pageCacheHeaders");
-    expect(src).toContain("isCacheablePath");
+    expect(src).toContain("isHtmlPagePath");
+  });
+
+  it("never appends Vary: Cookie", () => {
+    expect(src).not.toContain("Vary");
   });
 
   it("redirects age gate to /age-gate for non-bots", () => {
