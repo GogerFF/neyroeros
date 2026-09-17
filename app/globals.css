@@ -3,7 +3,7 @@
 --font-display-family:var(--font-display,"Cormorant"),Georgia,serif;
 h1,h2,h3,.brand b{font-family:var(--font-display-family);font-weight:600;letter-spacing:-.02em}
 .brand b{font-weight:700;letter-spacing:.08em}
-.footer-disclaimer{max-width:640px;margin:0.6rem auto 0;font-size:0.78rem;opacity:0.66;line-height:1.5}
+.footer-disclaimer{max-width:640px;margin:0.6rem auto 0;font-size:0.78rem;color:var(--muted);line-height:1.5}
 .gate-standalone{position:fixed;inset:0;z-index:99;background:#050506;display:grid;place-items:center;padding:1rem}
 .gate-standalone .modal{max-width:480px;padding:2.4rem;text-align:center;background:#0d0d10;border:1px solid #ffffff1f;border-radius:18px}
 .gate-actions{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}

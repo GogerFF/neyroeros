@@ -125,8 +125,8 @@ export default async function Artwork({ params, searchParams }: PageProps<"/artw
       <p className="lead">{a.description}</p>
       <div className="social-row">
         {session?.user
-          ? <form action={toggleLikeAction}><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><SubmitButton className={`like-button ${liked ? "liked" : ""}`}>{likeCount}</SubmitButton></form>
-          : <Link className="like-button" href="/login"><Heart size={18}/>{likeCount}</Link>}
+          ? <form action={toggleLikeAction}><input type="hidden" name="artworkId" value={a.id}/><input type="hidden" name="slug" value={a.slug}/><SubmitButton className={`like-button ${liked ? "liked" : ""}`} aria-label={liked ? `Убрать лайк (всего ${likeCount})` : `Поставить лайк (всего ${likeCount})`}><Heart size={18} fill={liked ? "currentColor" : "none"}/><span aria-hidden="true">{likeCount}</span></SubmitButton></form>
+          : <Link className="like-button" href="/login" aria-label={`Войти, чтобы поставить лайк (всего ${likeCount})`}><Heart size={18}/><span aria-hidden="true">{likeCount}</span></Link>}
         <div className="view-count" title="Уникальные просмотры"><Eye size={17}/>{raw.viewCount}</div>
         <ShareButtons url={canonical} title={a.title} image={imageUrl}/>
       </div>

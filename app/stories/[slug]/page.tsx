@@ -102,8 +102,8 @@ export default async function StoryPage({ params }: { params: Promise<{ slug: st
     </div>
     <div className="story-social">
       {session?.user
-        ? <form action="/api/stories/like" method="post"><input type="hidden" name="storyId" value={story.id}/><input type="hidden" name="slug" value={story.slug}/><button className={`like-button ${liked ? "liked" : ""}`}><Heart size={18} fill={liked ? "currentColor" : "none"} />{likeCount}</button></form>
-        : <Link className="like-button" href="/login"><Heart size={18}/>{likeCount}</Link>}
+        ? <form action="/api/stories/like" method="post"><input type="hidden" name="storyId" value={story.id}/><input type="hidden" name="slug" value={story.slug}/><button className={`like-button ${liked ? "liked" : ""}`} aria-label={liked ? `Убрать лайк (всего ${likeCount})` : `Поставить лайк (всего ${likeCount})`}><Heart size={18} fill={liked ? "currentColor" : "none"} /><span aria-hidden="true">{likeCount}</span></button></form>
+        : <Link className="like-button" href="/login" aria-label={`Войти, чтобы поставить лайк (всего ${likeCount})`}><Heart size={18}/><span aria-hidden="true">{likeCount}</span></Link>}
     </div>
     <section className="comments">
       <h2>Комментарии <span>{comments.length}</span></h2>
