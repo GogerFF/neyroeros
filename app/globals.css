@@ -95,3 +95,48 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .art-detail h1{overflow-wrap:anywhere;word-break:break-word;hyphens:auto}
 .video-detail h1,.story-header h1,.section>h1,.auth h1{overflow-wrap:break-word}
 .card-body h3,.tag-pill,.tags span,.breadcrumbs em{overflow-wrap:break-word;min-width:0}
+
+/* ============================================================
+   Editorial-caps layer: style elements borrowed from a magazine
+   poster reference (condensed caps display, sticker chips, title
+   over image). The site's own concept stays: dark theme, lime
+   accent, masonry, serif display for detail pages.
+   ============================================================ */
+:root{--font-display-caps-family:var(--font-display-caps,"Oswald"),"Arial Narrow",Impact,sans-serif}
+
+/* 1. Display caps for section + category headings */
+.section>h1,.section-title h2,.category-grid h2,.comments h2{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:-.015em;font-weight:600}
+.section-title h2{letter-spacing:.01em}
+
+/* 2. Sticker chip: white plate with black caps text (eyebrow, latest-all) */
+.eyebrow{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:.14em;background:#f4f1ec;color:#0a0a0a;display:inline-flex;align-items:center;gap:.45rem;padding:.32rem .7rem;font-weight:600;font-size:.7rem;border-radius:0}
+.latest-all{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem}
+
+/* 3. Hero display: condensed caps at poster scale */
+.hero-rich .hero-copy h1,.hero h1{font-family:var(--font-display-caps-family);font-weight:700;text-transform:uppercase;letter-spacing:-.02em;line-height:.9}
+
+/* 4. Hero preview captions: condensed caps plates */
+.hero-preview-card span{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem}
+
+/* 5. Card titles: condensed caps */
+.card-body h3{font-family:var(--font-display-caps-family);text-transform:uppercase;font-weight:600;letter-spacing:.01em;font-size:.92rem}
+
+/* 6. Buttons: squarer corners + caps label */
+.button,button,.ghost{border-radius:10px}
+.button,button{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:.08em}
+.ghost{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:.08em}
+
+/* 7. Video hero overlay uses the same chip voice */
+.video-overlay .eyebrow{background:#f4f1ec;color:#0a0a0a}
+
+/* 8. Breadcrumbs: condensed caps */
+.breadcrumbs{font-family:var(--font-display-caps-family);text-transform:uppercase;letter-spacing:.06em;font-size:.74rem}
+
+/* Legacy rule .latest-heading .eyebrow{display:flex} stretches the chip across the
+   container; the sticker chip must hug its text. */
+section.latest-section .latest-heading .eyebrow{display:inline-flex;width:fit-content;align-self:flex-start}
+
+@media (max-width:800px){
+  .hero-rich .hero-copy h1{letter-spacing:-.015em}
+  .section>h1{letter-spacing:-.01em}
+}

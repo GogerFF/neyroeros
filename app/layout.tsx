@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { Cormorant } from "next/font/google";
+import { Cormorant, Oswald } from "next/font/google";
 import "./globals.css";
 import "./hero-video.css";
 import { Header } from "@/components/header";
@@ -15,6 +15,13 @@ const displayFont = Cormorant({
   weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-display",
+});
+
+const displayCapsFont = Oswald({
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+  variable: "--font-display-caps",
 });
 
 export const metadata: Metadata = {
@@ -37,7 +44,7 @@ export const metadata: Metadata = {
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const [locale, m] = await Promise.all([getLocale(), getMessages()]);
-  return <html lang={locale === "zh" ? "zh-CN" : locale} className={displayFont.variable}>
+  return <html lang={locale === "zh" ? "zh-CN" : locale} className={`${displayFont.variable} ${displayCapsFont.variable}`}>
     <head><meta name="RATING" content="RTA-5042-1996-1400-1577-RTA"/></head>
     <body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}/>
