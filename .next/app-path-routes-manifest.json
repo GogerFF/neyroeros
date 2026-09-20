@@ -31,8 +31,8 @@
   "/favicon.ico/route": "/favicon.ico",
   "/icon.png/route": "/icon.png",
   "/robots.txt/route": "/robots.txt",
-  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/api/age-confirm/route": "/api/age-confirm",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/api/cron/telegram-random/route": "/api/cron/telegram-random",
   "/api/images/download/[id]/route": "/api/images/download/[id]",
   "/feed.xml/route": "/feed.xml",
@@ -63,13 +63,13 @@
   "/page": "/",
   "/rules/page": "/rules",
   "/search/page": "/search",
-  "/stories/page": "/stories",
   "/stories/[slug]/page": "/stories/[slug]",
+  "/stories/page": "/stories",
   "/tags/[slug]/page": "/tags/[slug]",
   "/tags/page": "/tags",
-  "/top/page": "/top",
   "/takedown/page": "/takedown",
+  "/top/page": "/top",
   "/trending/page": "/trending",
-  "/videos/page": "/videos",
-  "/videos/[slug]/page": "/videos/[slug]"
+  "/videos/[slug]/page": "/videos/[slug]",
+  "/videos/page": "/videos"
 }

@@ -140,3 +140,10 @@ section.latest-section .latest-heading .eyebrow{display:inline-flex;width:fit-co
   .hero-rich .hero-copy h1{letter-spacing:-.015em}
   .section>h1{letter-spacing:-.01em}
 }
+/* Header: after the caps restyle the .ghost buttons got wider (tracking +
+   uppercase); the logout form pushed .header-actions past the right edge
+   at 1280px (11px overflow). Let the header items shrink instead. */
+.header-actions{min-width:0;flex-shrink:1}
+.header-actions form{min-width:0;display:flex}
+.header-actions .ghost{white-space:nowrap}
+header nav{min-width:0}
