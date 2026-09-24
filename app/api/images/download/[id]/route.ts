@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { auth } from "@/auth";
 import { readStored } from "@/lib/storage/local-storage";
+import { watermarkSvg } from "@/lib/watermark";
 import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
@@ -10,11 +10,16 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   const a = await db.artwork.findUnique({ where: { id }, include: { asset: true } });
   if (!a?.asset || a.status !== "PUBLISHED") return new Response("Не найдено", { status: 404 });
 
-  const buffer = await sharp(await readStored(a.asset.previewKey))
-    .composite([{
-      input: await createWatermarkSvg(),
-      gravity: "south",
-    }])
+  // The old fixed 900px watermark plate crashed sharp on narrower previews
+  // ("composite must have same dimensions or smaller") and the route 500-ed.
+  // The SVG canvas now matches the source image exactly.
+  const source = await readStored(a.asset.previewKey);
+  const meta = await sharp(source).metadata();
+  const width = meta.width ?? 1400;
+  const height = meta.height ?? Math.round((width * 3) / 2);
+
+  const buffer = await sharp(source)
+    .composite([{ input: watermarkSvg(width, height) }])
     .webp({ quality: 90 })
     .toBuffer();
 
@@ -28,12 +33,4 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
       "X-Content-Type-Options": "nosniff",
     },
   });
-}
-
-async function createWatermarkSvg() {
-  const svg = `<svg width="900" height="80" xmlns="http://www.w3.org/2000/svg">
-    <rect width="100%" height="100%" fill="rgba(0,0,0,0.55)"/>
-    <text x="50%" y="58%" text-anchor="middle" font-family="Georgia,serif" font-size="28" fill="rgba(255,255,255,0.82)" font-style="italic">neyroeros.com</text>
-  </svg>`;
-  return Buffer.from(svg);
 }
