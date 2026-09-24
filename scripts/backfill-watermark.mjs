@@ -37,7 +37,7 @@ const LIMIT = Number(process.argv[2] || 0);
 const PROGRESS = path.join(ROOT, "storage", "watermark-progress.txt");
 
 const rows = await db.artwork.findMany({
-  where: { deletedAt: null, assetId: { not: null } },
+  where: { deletedAt: null, asset: { isNot: null } },
   select: { id: true, asset: { select: { storageKey: true, previewKey: true, thumbnailKey: true, width: true, height: true } } },
   orderBy: { id: "asc" },
 });
@@ -60,12 +60,14 @@ for (const r of rows) {
 
     const pw = Math.min(1400, w);
     const ph = Math.round(pw * h / w);
-    const preview = await rotated.clone().composite([{ input: watermarkSvg(pw, ph) }])
+    const preview = await rotated.clone().resize({ width: pw, withoutEnlargement: true })
+      .composite([{ input: watermarkSvg(pw, ph) }])
       .webp({ quality: 82 }).toBuffer();
 
     const tw = Math.min(600, w);
     const th = Math.round(tw * h / w);
-    const thumb = await rotated.clone().composite([{ input: watermarkSvg(tw, th) }])
+    const thumb = await rotated.clone().resize({ width: tw, withoutEnlargement: true })
+      .composite([{ input: watermarkSvg(tw, th) }])
       .webp({ quality: 78 }).toBuffer();
 
     // rotate-совместимость с storeImage (EXIF): применяем .rotate() до ресайза
