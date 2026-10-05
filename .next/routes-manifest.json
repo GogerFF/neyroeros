@@ -227,6 +227,12 @@
       "namedRegex": "^/admin(?:/)?$"
     },
     {
+      "page": "/admin/analytics",
+      "regex": "^/admin/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/analytics(?:/)?$"
+    },
+    {
       "page": "/admin/hero",
       "regex": "^/admin/hero(?:/)?$",
       "routeKeys": {},
@@ -291,6 +297,12 @@
       "regex": "^/api/ai/suggest(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/ai/suggest(?:/)?$"
+    },
+    {
+      "page": "/api/analytics/track",
+      "regex": "^/api/analytics/track(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/analytics/track(?:/)?$"
     },
     {
       "page": "/api/artworks/create",

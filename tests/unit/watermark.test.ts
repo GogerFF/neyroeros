@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { watermarkSvg } from "@/lib/watermark";
 
-const num = (svg: Buffer, attr: string) =>
-  Number(/`${attr}`|attr="([^"]+)"/.test("") ? svg.toString().match(new RegExp(`${attr}="(\\d+)"`))?.[1] : NaN);
-
 describe("watermark svg", () => {
   it("canvas matches the target image size (sharp composite requirement)", () => {
     for (const [w, h] of [[832, 1152], [1400, 900], [600, 800], [100, 100]] as const) {

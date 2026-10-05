@@ -457,3 +457,31 @@ model RateLimitEvent {
 
   @@index([scope, subjectHash, createdAt])
 }
+
+/// One row per pageview. Deliberately stores no IP address and no raw user
+/// agent: `viewerKey` is an HMAC of a rotating cookie (same approach as
+/// ArtworkView), which is enough to count unique visitors and new-vs-returning
+/// without keeping personal data.
+model PageView {
+  id          String   @id @default(cuid())
+  path        String
+  pathKind    String
+  viewerKey   String
+  channel     String
+  source      String
+  device      String
+  os          String
+  browser     String
+  country     String   @default("")
+  isBot       Boolean  @default(false)
+  isNewViewer Boolean  @default(false)
+  userId      String?
+  dayBucket   String
+  createdAt   DateTime @default(now())
+
+  @@index([dayBucket, createdAt])
+  @@index([viewerKey])
+  @@index([channel, dayBucket])
+  @@index([pathKind, dayBucket])
+  @@index([isBot, createdAt])
+}
