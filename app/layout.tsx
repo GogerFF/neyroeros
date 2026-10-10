@@ -5,6 +5,7 @@ import { Cormorant, Oswald } from "next/font/google";
 import "./globals.css";
 import "./hero-video.css";
 import "./discovery.css";
+import "./home-atmosphere.css";
 import { Header } from "@/components/header";
 import { getLocale, getMessages } from "@/lib/i18n-server";
 import { YandexMetrika } from "@/components/yandex-metrika";

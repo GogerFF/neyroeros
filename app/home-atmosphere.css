@@ -1,0 +1,33 @@
+/* Homepage-only editorial entrance. No shared palette or card overrides. */
+.atmosphere{--atmo:#f15b79;--atmo-wash:#65182f;position:relative;isolation:isolate;display:grid;grid-template-columns:52px minmax(0,1.4fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);margin:0 4vw 60px;padding:clamp(24px,4vw,58px);border:1px solid #f4e9ee40;background:radial-gradient(ellipse at 0 0,var(--atmo-wash),transparent 70%),#101013;color:#f7eff3;overflow:hidden}
+.atmosphere-electric{--atmo:#c6a5ff;--atmo-wash:#422365}
+.atmosphere-silver{--atmo:#e0e6ed;--atmo-wash:#39424e}
+.atmosphere::after{content:"";position:absolute;z-index:-1;width:430px;height:430px;right:-170px;top:-90px;border:1px solid var(--atmo);border-radius:50%;opacity:.22;box-shadow:0 0 0 50px #ffffff05,0 0 0 100px #ffffff03;pointer-events:none}
+.atmosphere-index{display:flex;flex-direction:column;align-items:center;gap:24px;font:500 2.8rem/1 var(--font-display-family)}
+.atmosphere-index i{width:1px;flex:1;background:linear-gradient(var(--atmo),transparent)}
+.atmosphere-copy,.atmosphere-portals{min-width:0}
+.atmosphere-kicker{display:block;font:500 .75rem/1.5 var(--font-display-caps-family);letter-spacing:.16em;text-transform:uppercase;color:var(--atmo);margin-bottom:22px}
+.atmosphere .atmosphere-copy h2{font:500 clamp(2.8rem,5.4vw,5.4rem)/.98 var(--font-display-family);letter-spacing:-.04em;max-width:12ch;text-wrap:balance;overflow-wrap:break-word;margin:0 0 24px}
+.atmosphere-copy>p{font-size:.9rem;line-height:1.6;color:#d5c9d2;max-width:48ch;margin:0}
+.atmosphere-modes{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.atmosphere-modes button{border:1px solid #ffffff45;border-radius:0;background:#0c0b1133;color:#f7eff3;padding:12px 14px;cursor:pointer;font:500 .75rem/1.4 var(--font-display-caps-family);letter-spacing:.06em;transition:background .2s,color .2s,border-color .2s;min-height:44px;max-width:100%;overflow-wrap:break-word}
+.atmosphere-modes button.is-active{background:var(--atmo);border-color:var(--atmo);color:#151018}
+.atmosphere-modes button:hover{border-color:var(--atmo)}
+.atmosphere-copy .atmosphere-note{margin-top:18px;color:var(--atmo);min-height:3.2em;font-size:.82rem}
+.atmosphere-note span{font-size:1.3rem;margin-right:8px}
+.atmosphere-portals{align-self:center;display:flex;flex-direction:column;gap:12px}
+.atmosphere-portal{position:relative;display:grid;gap:10px;border:1px solid #ffffff30;background:#09080d66;padding:20px 48px 24px 22px;transition:transform .2s,border-color .2s;color:#f7eff3}
+.atmosphere-portal-main{background:var(--atmo);border-color:var(--atmo);color:#151018}
+.atmosphere-portal>span{font:500 .65rem/1.4 var(--font-display-caps-family);letter-spacing:.17em}
+.atmosphere-portal strong{font:500 clamp(1.6rem,2.4vw,2.5rem)/1.15 var(--font-display-family);overflow-wrap:break-word}
+.atmosphere-portal em{position:absolute;right:20px;top:50%;font:normal 1.5rem/1 sans-serif;transform:translateY(-50%)}
+.atmosphere-portal:hover{transform:translateX(4px);border-color:var(--atmo)}
+.atmosphere-guide-text{margin:8px 0 0;font-size:.76rem;line-height:1.6;color:#d5c9d2;max-width:44ch}
+.atmosphere-guide{display:flex;justify-content:space-between;gap:12px;padding:12px 0;color:#e0d5dd;font-size:.78rem;border-bottom:1px solid #ffffff30}
+.atmosphere :is(a,button):focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:0}
+.home-gallery .card{border:1px solid #ffffff26;border-radius:3px;padding:5px;background:#171419;box-shadow:0 12px 26px #0003;transition:border-color .2s,box-shadow .2s}
+.home-gallery .card:hover,.home-gallery .card:focus-within{border-color:#dd8ca8;box-shadow:0 14px 32px #0006}
+.home-gallery .card .card-media{overflow:hidden;border-radius:1px}
+.home-gallery .card .card-body{padding:15px 12px 12px;border-top:1px solid #ffffff15}
+@media(max-width:800px){.atmosphere{grid-template-columns:1fr;margin:0 4vw 36px;gap:24px;padding:26px 22px}.atmosphere-index{display:none}.atmosphere .atmosphere-copy h2{font-size:clamp(2.8rem,10vw,4.6rem);max-width:15ch}.atmosphere-kicker{margin-bottom:16px}.atmosphere-portals{gap:10px}.atmosphere-portal{padding:16px 46px 18px 18px}.atmosphere-portal strong{font-size:1.9rem}.atmosphere-modes{margin-top:20px}.atmosphere-modes button{flex:1 1 120px}}
+@media(prefers-reduced-motion:reduce){.atmosphere :is(a,button),.home-gallery .card,.home-gallery .card img{transition:none!important}.atmosphere-portal:hover,.home-gallery .card:hover .card-media img{transform:none}}
