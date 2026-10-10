@@ -455,6 +455,12 @@
       "namedRegex": "^/feed\\.xml(?:/)?$"
     },
     {
+      "page": "/flow",
+      "regex": "^/flow(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/flow(?:/)?$"
+    },
+    {
       "page": "/icon.png",
       "regex": "^/icon\\.png(?:/)?$",
       "routeKeys": {},
@@ -543,6 +549,12 @@
       "regex": "^/trending(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/trending(?:/)?$"
+    },
+    {
+      "page": "/universe",
+      "regex": "^/universe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/universe(?:/)?$"
     },
     {
       "page": "/videos",

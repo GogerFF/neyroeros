@@ -9,6 +9,8 @@ export async function Header(){
   const[s,l,m]=await Promise.all([auth(),getLocale(),getMessages()]);
   const isAdmin=["ADMIN","MODERATOR"].includes(s?.user.role||"");
   const drawerLinks=[
+    { href: "/universe", name: "Universe" },
+    { href: "/flow?seed=header", name: "Flow" },
     { href: "/categories", name: m.categories },
     { href: "/top", name: m.top },
     { href: "/trending", name: m.trending },
@@ -25,6 +27,8 @@ export async function Header(){
   ];
   return <header><Link className="brand" href="/"><b>NEYROEROS</b></Link>
   <nav>
+    <Link href="/universe">Universe</Link>
+    <Link href="/flow?seed=header">Flow</Link>
     <Link href="/categories">{m.categories}</Link>
     <Link href="/top">{m.top}</Link>
     <Link href="/trending">{m.trending}</Link>
