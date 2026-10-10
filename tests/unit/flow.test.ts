@@ -38,8 +38,9 @@ describe("Flow discovery", () => {
   it("wires filtered counts, DNA, density and sitemap without schema changes", () => {
     const read = (p: string) => readFileSync(p, "utf8");
     const universe = read("app/universe/page.tsx");
-    expect(universe).toContain("artworks: { where: { artwork: published } }");
-    expect(universe).toContain("artworks: { where: published }");
+    expect(universe).toContain("db.artworkTag.groupBy");
+    expect(universe).toContain("where: { artwork: discoveryPublished }");
+    expect(universe).toContain("db.artwork.groupBy");
     expect(universe).toContain("serializeJsonLd(schema)");
     const flow = read("app/flow/page.tsx");
     expect(flow).toContain('canonical: "/flow"');
