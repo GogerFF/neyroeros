@@ -13,10 +13,6 @@ export const dynamic = "force-dynamic";
 type Params = { params: Promise<{ slug: string }> };
 
 const publishedArtwork = { status: "PUBLISHED" as const, deletedAt: null };
-const tagSelect = {
-  id: true, name: true, slug: true,
-  _count: { select: { artworks: { where: { artwork: publishedArtwork } } } },
-} as const;
 
 async function getTag(slug: string) {
   return firstMatch(slugCandidates(slug), (candidate) =>
@@ -26,22 +22,40 @@ async function getTag(slug: string) {
 /**
  * Tags that co-occur with this one on published works, busiest first, topped up
  * with generally busy tags so a thin tag still gets a useful way out of the page.
+ * Counted with a single GROUP BY per bucket instead of a correlated COUNT(*) per
+ * tag (which froze the single Passenger worker on a populated DB).
  */
 async function getRelatedTags(tagId: string, take: number) {
-  const coOccurring = await db.tag.findMany({
-    where: { NOT: { id: tagId }, artworks: { some: { artwork: { ...publishedArtwork, tags: { some: { tagId } } } } } },
-    select: tagSelect,
-    orderBy: { artworks: { _count: "desc" } },
+  const coGroups = await db.artworkTag.groupBy({
+    by: ["tagId"],
+    where: { tagId: { not: tagId }, artwork: { ...publishedArtwork, tags: { some: { tagId } } } },
+    _count: { _all: true },
+    orderBy: { _count: { tagId: "desc" } },
     take,
   });
-  if (coOccurring.length >= take) return coOccurring;
-  const filler = await db.tag.findMany({
-    where: { NOT: { id: tagId }, artworks: { some: { artwork: publishedArtwork } } },
-    select: tagSelect,
-    orderBy: { artworks: { _count: "desc" } },
-    take: take - coOccurring.length,
-  });
-  return [...coOccurring, ...filler.filter((f) => !coOccurring.some((c) => c.id === f.id))];
+  const coCount = new Map(coGroups.map((g) => [g.tagId, g._count._all]));
+
+  const fillerGroups = coGroups.length < take
+    ? await db.artworkTag.groupBy({
+        by: ["tagId"],
+        where: { tagId: { not: tagId }, artwork: publishedArtwork },
+        _count: { _all: true },
+        orderBy: { _count: { tagId: "desc" } },
+        take: take - coGroups.length,
+      })
+    : [];
+
+  const merged = [...coGroups, ...fillerGroups.filter((g) => !coCount.has(g.tagId))];
+  const ids = merged.map((g) => g.tagId);
+  const rows = ids.length ? await db.tag.findMany({ where: { id: { in: ids } }, select: { id: true, name: true, slug: true } }) : [];
+  const nameById = new Map(rows.map((r) => [r.id, r]));
+
+  return merged
+    .map((g) => {
+      const r = nameById.get(g.tagId);
+      return r ? { id: r.id, name: r.name, slug: r.slug, _count: { artworks: g._count._all } } : null;
+    })
+    .filter((x): x is { id: string; name: string; slug: string; _count: { artworks: number } } => x !== null);
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
