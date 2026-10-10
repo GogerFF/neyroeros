@@ -1,0 +1,129 @@
+/* Neyroeros unified visual system.
+   This is the final layer: all public surfaces share one rhythm, one accent,
+   one radius language and one type hierarchy. Page-specific layouts remain intact. */
+:root {
+  --ui-radius: 12px;
+  --ui-radius-sm: 8px;
+  --ui-space: clamp(1rem, 2vw, 1.5rem);
+  --ui-accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --ui-border-strong: color-mix(in srgb, var(--text) 22%, transparent);
+}
+
+body > header {
+  min-height: 68px;
+  padding-block: .8rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+body > header nav a,
+.header-actions > a,
+.header-actions button,
+.mobile-menu-button {
+  border-radius: var(--ui-radius-sm);
+}
+
+.eyebrow {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  border-radius: 999px;
+  padding: .38rem .72rem;
+  letter-spacing: .12em;
+}
+
+.section,
+.latest-section {
+  width: min(100% - 8vw, 1480px);
+  margin-inline: auto;
+}
+
+.section > h1,
+.section-title h2,
+.category-grid h2,
+.comments h2,
+.flow-info h1,
+.universe-intro h1,
+.atmosphere .atmosphere-copy h2 {
+  font-family: var(--font-display-family);
+  text-transform: none;
+  letter-spacing: -.035em;
+  line-height: .98;
+}
+
+.section > h1 { font-size: clamp(3rem, 7vw, 6.2rem); }
+.section-title h2 { font-size: clamp(2rem, 4vw, 3.6rem); }
+
+.button,
+.ghost,
+button {
+  min-height: 42px;
+  border-radius: var(--ui-radius-sm);
+  letter-spacing: .04em;
+  text-transform: none;
+  transition: border-color .2s, background-color .2s, color .2s, transform .2s;
+}
+
+.button { box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 12%, transparent); }
+.button:hover,
+.ghost:hover { transform: translateY(-1px); }
+
+.card,
+.video-card,
+.analytics-card,
+.flow-image,
+.universe-orbit,
+.atmosphere,
+.category-grid > a {
+  border-radius: var(--ui-radius);
+  border-color: var(--line);
+}
+
+.card { background: var(--panel); padding: 0; overflow: hidden; }
+.card .card-body { padding: 1rem; }
+.card-body h3 { font-family: var(--font-display-family); text-transform: none; font-size: 1.25rem; letter-spacing: -.01em; }
+.card:hover,
+.card:focus-within,
+.video-card:hover { border-color: var(--ui-border-strong); box-shadow: 0 14px 34px #0005; }
+
+.tag-pill,
+.flow-tags a,
+.universe-tag {
+  border-radius: 999px;
+  background: var(--ui-accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+}
+
+/* One restrained discovery language: lime + graphite, not a second purple brand. */
+.universe-orbit { background: radial-gradient(ellipse at 80% 20%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 60%), var(--panel); }
+.universe-orbit::before { border-color: color-mix(in srgb, var(--accent) 28%, transparent); box-shadow: 0 0 0 28px color-mix(in srgb, var(--accent) 4%, transparent), 0 0 0 29px color-mix(in srgb, var(--accent) 10%, transparent); }
+.universe-orbit:hover,
+.universe-tag:hover,
+.flow-tags a:hover { border-color: var(--accent); }
+.universe-tag > span,
+.flow-category { color: var(--accent); }
+
+.atmosphere {
+  --atmo: var(--accent);
+  --atmo-wash: #263018;
+  border-radius: var(--ui-radius);
+  background: radial-gradient(ellipse at 0 0, var(--atmo-wash), transparent 70%), var(--panel);
+}
+.atmosphere-electric,
+.atmosphere-silver { --atmo: var(--accent); --atmo-wash: #263018; }
+.atmosphere-portal-main { background: var(--accent); border-color: var(--accent); }
+.atmosphere-modes button.is-active { background: var(--accent); border-color: var(--accent); }
+.atmosphere-portal:hover { border-color: var(--accent); }
+
+.flow-stage { gap: clamp(1.5rem, 3vw, 3rem); }
+.flow-controls { border-color: var(--line); }
+
+@media (max-width: 800px) {
+  .section, .latest-section { width: min(100% - 2rem, 1480px); }
+  body > header { min-height: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:hover, .ghost:hover, .card:hover, .video-card:hover { transform: none; }
+}
