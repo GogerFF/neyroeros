@@ -1,5 +1,16 @@
 User-Agent: *
 Allow: /
+Allow: /api/images/preview/
+Allow: /api/images/thumbnail/
+Allow: /api/images/og/
+Allow: /api/images/original/
+Allow: /api/videos/*/video
+Allow: /api/videos/*/poster
+Allow: /api/stories/images/
+Allow: /api/avatars/
+Allow: /api/hero/*/mp4
+Allow: /api/hero/*/webm
+Allow: /api/hero/*/poster
 Disallow: /api/
 Disallow: /dashboard
 Disallow: /admin

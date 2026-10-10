@@ -1,5 +1,21 @@
 export const SITE_URL = "https://neyroeros.com";
 
+/**
+ * Serialize a schema.org object for <script type="application/ld+json">.
+ * </script> inside a JSON-LD string would terminate the tag early in the HTML
+ * parser, so close it defensively; strip control characters the JSON spec
+ * allows in strings but XML/HTML consumers choke on.
+ */
+export function serializeJsonLd(data: unknown) {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+
 export function absoluteUrl(path: string) {
   return path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }

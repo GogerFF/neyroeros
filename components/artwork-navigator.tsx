@@ -10,6 +10,12 @@ function hrefFor(slug: string, categorySlug?: string) {
   return categorySlug ? `/artwork/${slug}?category=${categorySlug}` : `/artwork/${slug}`;
 }
 
+function isTypingTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+  const tag = target.tagName;
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target.isContentEditable;
+}
+
 export function ArtworkNavigator({ current, items, categorySlug }: { current: string; items: Item[]; categorySlug?: string }) {
   const position = items.findIndex((item) => item.slug === current);
   const previous = position > 0 ? items[position - 1] : null;
@@ -18,6 +24,7 @@ export function ArtworkNavigator({ current, items, categorySlug }: { current: st
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (isTypingTarget(event.target)) return;
       if (event.key === "ArrowLeft" && previous) location.assign(hrefFor(previous.slug, categorySlug));
       if (event.key === "ArrowRight" && next) location.assign(hrefFor(next.slug, categorySlug));
       if (event.key === "Escape") location.assign(backHref);
