@@ -43,6 +43,7 @@ describe("mobile drawer focus management", () => {
     const src = read("components/mobile-menu.tsx");
     expect(src).toContain('aria-controls="mobile-drawer"');
     expect(src).toContain('id="mobile-drawer"');
-    expect(src).toContain('aria-modal="true"');
+    expect(src).toContain('containerRef.current?.querySelectorAll');
+    expect(src).toContain('window.addEventListener("keydown", onKey, true)');
   });
 });
