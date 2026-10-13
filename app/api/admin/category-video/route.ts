@@ -22,8 +22,10 @@ export async function POST(request: Request) {
   const categoryId = String(form.get("categoryId") || "");
   const title = String(form.get("title") || "").trim();
   const description = String(form.get("description") || "").trim();
-  const durationSec = Number(form.get("durationSec"));
-  if (!(file instanceof File) || !adminVideoSizeIsAllowed(file.size) || title.length < 2 || title.length > 100 || description.length < 2 || description.length > 2000 || !Number.isInteger(durationSec) || durationSec < 1 || durationSec > 3600) {
+  // Duration is not entered on the upload form; store "unknown" rather than a
+  // fabricated number. UI and JSON-LD hide the field when it is zero.
+  const durationSec = 0;
+  if (!(file instanceof File) || !adminVideoSizeIsAllowed(file.size) || title.length < 2 || title.length > 100 || description.length < 2 || description.length > 2000) {
     redirect("/admin?videoError=invalid");
   }
 

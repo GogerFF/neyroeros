@@ -15,16 +15,25 @@ function safe(key: string) {
   return target;
 }
 
-export async function storeUserVideo(video: File, poster: File) {
+export async function storeUserVideo(video: File, poster?: File) {
   const videoData = Buffer.from(await video.arrayBuffer());
   if (videoData.length > MAX_VIDEO_BYTES) throw new Error("Видео не должно превышать 30 МБ");
   const mimeType = videoMimeFromHeader(videoData);
 
-  const posterData = Buffer.from(await poster.arrayBuffer());
-  if (posterData.length > MAX_POSTER_BYTES) throw new Error("Poster не должен превышать 5 МБ");
-  detectImageType(posterData);
-  const metadata = await sharp(posterData).metadata();
-  if (!metadata.width || !metadata.height) throw new Error("Poster-изображение повреждено");
+  let posterData: Buffer;
+  if (poster) {
+    posterData = Buffer.from(await poster.arrayBuffer());
+    if (posterData.length > MAX_POSTER_BYTES) throw new Error("Poster не должен превышать 5 МБ");
+    detectImageType(posterData);
+    const metadata = await sharp(posterData).metadata();
+    if (!metadata.width || !metadata.height) throw new Error("Poster-изображение повреждено");
+  } else {
+    // A video upload must not require a second file. Until ffmpeg extraction is
+    // introduced, use a valid neutral poster so the existing Video contract stays intact.
+    posterData = await sharp({
+      create: { width: 1280, height: 720, channels: 3, background: { r: 13, g: 11, b: 18 } },
+    }).webp({ quality: 82 }).toBuffer();
+  }
 
   const base = `videos/${new Date().getUTCFullYear()}/${randomUUID()}`;
   const extension = mimeType === "video/mp4" ? "mp4" : "webm";

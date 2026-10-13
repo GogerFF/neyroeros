@@ -45,7 +45,6 @@ export default async function Admin({ searchParams }: PageProps<"/admin">) {
       <label>Категория<select name="categoryId" required defaultValue=""><option value="" disabled>Выберите категорию</option>{categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
       <label>Название<input name="title" required minLength={2} maxLength={100}/></label>
       <label>Описание<textarea name="description" required minLength={2} maxLength={2000}/></label>
-      <label>Длительность, секунд<input name="durationSec" type="number" required min={1} max={3600}/></label>
       <label className="drop">Видео до 50 МБ<input name="file" type="file" accept="video/mp4,video/webm" required/></label>
       <button>Загрузить и опубликовать</button>
     </form>
