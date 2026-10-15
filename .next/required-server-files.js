@@ -104,7 +104,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\sklya\\Desktop\\html",
+    "outputFileTracingRoot": "C:\\Users\\sklya\\neyroeros-site",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -308,11 +308,11 @@ self.__SERVER_FILES_MANIFEST={
     "configFileName": "next.config.ts",
     "serverExternalPackages": [],
     "turbopack": {
-      "root": "C:\\Users\\sklya\\Desktop\\html"
+      "root": "C:\\Users\\sklya\\neyroeros-site"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\sklya\\Desktop\\html",
+  "appDir": "C:\\Users\\sklya\\neyroeros-site",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",

@@ -146,7 +146,7 @@ export default async function TrafficAnalytics({ searchParams }: PagePropsAdmin)
     <div className="analytics-card">
       <h3>Самые посещаемые страницы</h3>
       <ul className="analytics-paths">
-        {s.topPaths.map((p) => <li key={p.path}>
+        {s.topPaths.map((p: { path: string; value: number }) => <li key={p.path}>
           <Link href={p.path === "/" ? "/" : p.path}>{p.path}</Link>
           <span>{p.value.toLocaleString("ru-RU")}</span>
         </li>)}

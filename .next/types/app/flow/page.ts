@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\Desktop\html\app\flow\page.tsx
+// File: C:\Users\sklya\neyroeros-site\app\flow\page.tsx
 import * as entry from '../../../../app/flow/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

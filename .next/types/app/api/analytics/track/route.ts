@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\Desktop\html\app\api\analytics\track\route.ts
+// File: C:\Users\sklya\neyroeros-site\app\api\analytics\track\route.ts
 import * as entry from '../../../../../../app/api/analytics/track/route.js'
 import type { NextRequest } from 'next/server.js'
 

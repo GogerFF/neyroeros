@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\Desktop\html\app\api\ai\suggest\route.ts
+// File: C:\Users\sklya\neyroeros-site\app\api\ai\suggest\route.ts
 import * as entry from '../../../../../../app/api/ai/suggest/route.js'
 import type { NextRequest } from 'next/server.js'
 

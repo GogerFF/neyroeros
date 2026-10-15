@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\Desktop\html\app\dashboard\uploads\[id]\edit\page.tsx
+// File: C:\Users\sklya\neyroeros-site\app\dashboard\uploads\[id]\edit\page.tsx
 import * as entry from '../../../../../../../app/dashboard/uploads/[id]/edit/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

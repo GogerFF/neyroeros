@@ -10,6 +10,7 @@ import "./design-system.css";
 import { Header } from "@/components/header";
 import { getLocale, getMessages } from "@/lib/i18n-server";
 import { YandexMetrika } from "@/components/yandex-metrika";
+import { HermesWormNode } from "@/components/hermes-worm-node";
 import { ScrollTopButton } from "@/components/scroll-top";
 import { TrafficTracker } from "@/components/traffic-tracker";
 import { webSiteSchema } from "@/lib/seo";
@@ -53,6 +54,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}/>
     <YandexMetrika/>
+    <HermesWormNode/>
         <TrafficTracker/>
         <Header/>
     <main>{children}</main>
