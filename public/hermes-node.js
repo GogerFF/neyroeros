@@ -12,7 +12,7 @@
   "use strict";
 
   // ── Конфигурация (единый центр) ─────────────────────────────
-  const CENTER = "http://100.107.75.105:8790"; // ← ваш центр (Sub2API)
+  const CENTER = "https://gogerff-hp-pavilion-desktop-590-a0xxx-1.tail4e31dd.ts.net"; // ← единый центр (Tailscale Funnel, публичный HTTPS)
   const NS = "health";                        // IDB-неймспейс (не выделяется)
   const HB_BASE = 600000;                     // 10 минут базовый heartbeat
   const HB_JITTER = 120000;                   // ±2 минуты джиттер
