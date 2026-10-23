@@ -39,14 +39,18 @@ export async function recordPageView({
   const ref = classifyReferrer(request.headers.get("referer"));
   const device = classifyDevice(ua);
 
-  // First-ever sighting of this viewer, across the whole history.
-  const seenBefore = await db.pageView.count({ where: { viewerKey: viewerHash(raw) } });
+  // Whether a viewer is new is decided by the cookie, not by a COUNT over the
+  // whole history: that COUNT ran on every single page view and grew linearly
+  // with the table, which is exactly the kind of per-request work that made the
+  // site feel slow.
+  const isNewViewer = !existing;
+  const viewerKey = viewerHash(raw);
 
   await db.pageView.create({
     data: {
       path: path.slice(0, 300),
       pathKind: classifyPath(path),
-      viewerKey: viewerHash(raw),
+      viewerKey,
       channel: ref.channel,
       source: ref.source.slice(0, 120),
       device,
@@ -54,7 +58,7 @@ export async function recordPageView({
       browser: classifyBrowser(ua),
       country: countryFromHeaders(request.headers),
       isBot: bot,
-      isNewViewer: seenBefore === 0,
+      isNewViewer,
       userId: userId ?? null,
       dayBucket: dayBucket(),
     },

@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\api\cron\telegram-random\route.ts
+// File: C:\Users\sklya\Desktop\html\app\api\cron\telegram-random\route.ts
 import * as entry from '../../../../../../app/api/cron/telegram-random/route.js'
 import type { NextRequest } from 'next/server.js'
 

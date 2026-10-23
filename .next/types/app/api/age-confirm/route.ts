@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\api\age-confirm\route.ts
+// File: C:\Users\sklya\Desktop\html\app\api\age-confirm\route.ts
 import * as entry from '../../../../../app/api/age-confirm/route.js'
 import type { NextRequest } from 'next/server.js'
 

@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\llms.txt\route.ts
+// File: C:\Users\sklya\Desktop\html\app\llms.txt\route.ts
 import * as entry from '../../../../app/llms.txt/route.js'
 import type { NextRequest } from 'next/server.js'
 

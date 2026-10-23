@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\api\artworks\manage\route.ts
+// File: C:\Users\sklya\Desktop\html\app\api\artworks\manage\route.ts
 import * as entry from '../../../../../../app/api/artworks/manage/route.js'
 import type { NextRequest } from 'next/server.js'
 

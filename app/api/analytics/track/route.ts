@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { isTrustedOrigin } from "@/lib/request-origin";
-import { recordPageView, prunePageViews } from "@/lib/traffic";
+import { recordPageView } from "@/lib/traffic";
 import { isHtmlPagePath } from "@/lib/cache-policy";
 
 export const dynamic = "force-dynamic";
@@ -29,13 +29,6 @@ export async function POST(request: Request) {
 
   const session = await auth();
   const { cookie } = await recordPageView({ request, path, userId: session?.user?.id });
-
-  // Shared hosting has a small disk, so the raw table is trimmed in the
-  // background. Fire-and-forget: a visitor's pageview must never wait on a
-  // DELETE, and a failed prune is harmless (it runs again on the next hit).
-  if (Math.random() < 0.02) {
-    void prunePageViews().catch(() => undefined);
-  }
 
   const res = new Response(null, { status: 204 });
   if (cookie) res.headers.append("Set-Cookie", cookie);

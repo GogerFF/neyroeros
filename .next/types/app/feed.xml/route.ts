@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\feed.xml\route.ts
+// File: C:\Users\sklya\Desktop\html\app\feed.xml\route.ts
 import * as entry from '../../../../app/feed.xml/route.js'
 import type { NextRequest } from 'next/server.js'
 

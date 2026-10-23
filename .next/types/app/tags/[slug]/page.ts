@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\tags\[slug]\page.tsx
+// File: C:\Users\sklya\Desktop\html\app\tags\[slug]\page.tsx
 import * as entry from '../../../../../app/tags/[slug]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,4 +1,4 @@
-// File: C:\Users\sklya\neyroeros-site\app\image-sitemap.xml\route.ts
+// File: C:\Users\sklya\Desktop\html\app\image-sitemap.xml\route.ts
 import * as entry from '../../../../app/image-sitemap.xml/route.js'
 import type { NextRequest } from 'next/server.js'
 
